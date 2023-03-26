@@ -1,6 +1,9 @@
 import { exportWorkspaceData } from './exportData';
 import fs from 'node:fs';
 import { importWorkspaceData } from './importData';
+import InternalDb from './db/InternalDb';
+import { getActiveProjectId, getActiveWorkspace } from './db/localStorageUtils';
+import { join } from 'node:path';
 
 (async () => {
   //const exportData = await getSaveDataForWorkspace('wrk_1e5e0b1c2e7842308532f57616fc13e4');
@@ -16,79 +19,69 @@ import { importWorkspaceData } from './importData';
   //window.main.restart();
 })();
 
-
 module.exports.workspaceActions = [
   {
-    label: 'Repo Sync - Export Workspace',
+    label: 'Export workspace to Git',
     icon: 'fa-download',
     action: async (context, models) => {
-      console.log(context, models);
+      const projectId = getActiveProjectId();
+      const workspaceId = getActiveWorkspace();
 
-      // const repo = new WorkspaceRepo(context);
-      // if (!(await verifyRepoConfig(repo, context))) return;
+      const config = InternalDb.create();
+      const path = config.getProjectPath(projectId);
+      if (!path || projectId === 'proj_default-project') {
+        // TODO: Better error message
+        alert('Project is not configured or default project')
+        return;
+      }
 
-      // const path = await repo.getPath();
-      // const rawJsonString = await context.data.export.insomnia({
-      //   includePrivate: false,
-      //   format: 'json',
-      //   workspace: models.workspace,
-      // });
-
-      // const exported = JSON.parse(rawJsonString);
-
-      // exported.resources.forEach((resource) => {
-      //   // Insomnia update the `modified` of a resource even when the resource
-      //   // has only been open in the app. This is very noisy when reviewing
-      //   // changes in requests so `modified` is overwrite with `created` in
-      //   // the exports
-      //   if (resource.modified && resource.created) {
-      //     resource.modified = resource.created;
-      //   }
-
-      //   // Secure cookie should not be sync because they could leak
-      //   // authentication credentials
-      //   if (resource._type === 'cookie_jar') {
-      //     resource.cookies = resource.cookies.filter(
-      //       (cookie) => !cookie.secure
-      //     );
-      //   }
-      // });
-
-      // fs.writeFileSync(
-      //   `${path}/${models.workspace.name}.json`,
-      //   JSON.stringify(exported, null, 2)
-      // );
+      const data = await exportWorkspaceData(workspaceId);
+      const targetFile = join(path, workspaceId + '.json');
+      fs.writeFileSync(targetFile, JSON.stringify(data, null, 2));
     },
   },
   {
-    label: 'Repo Sync - Import Workspace',
+    label: 'Import workspace from Git',
     icon: 'fa-upload',
     action: async (context, models) => {
-      // const repo = new WorkspaceRepo(context);
-      // if (!(await verifyRepoConfig(repo, context))) return;
+      const projectId = getActiveProjectId();
+      const workspaceId = getActiveWorkspace();
 
-      // const path = await repo.getPath();
-      // const imported = fs.readFileSync(
-      //   `${path}/${models.workspace.name}.json`,
-      //   'utf8'
-      // );
+      const config = InternalDb.create();
+      const path = config.getProjectPath(projectId)
+      if (!path || projectId === 'proj_default-project') {
+        // TODO: Better error message
+        alert('Project is not configured or default project')
+        return;
+      }
 
-      // await context.data.import.raw(imported);
+      const targetFile = join(path, workspaceId + '.json');
+      const dataRaw = JSON.parse(fs.readFileSync(targetFile).toString());
+      await importWorkspaceData(dataRaw);
+      // @ts-ignore
+      window.main.restart();
     },
   },
   {
-    label: 'Repo Sync - Configure',
+    label: 'Configure Repository',
     icon: 'fa-cog',
     action: async (context, models) => {
-      // const repo = new WorkspaceRepo(context);
+      const projectId = getActiveProjectId();
 
-      // const repoPath = await ScreenHelper.askRepoPath(context, {
-      //   currentPath: await repo.getPath(),
-      //   workspaceName: models.workspace.name,
-      // });
-      // if (repoPath == null) return;
+      if (projectId === 'proj_default-project') {
+        // TODO: Better error message
+        alert('Can not configure for default project create seperate')
+        return;
+      }
 
-      // await repo.setPath(repoPath);
+      // @ts-ignore
+      const openResult = await window.dialog.showOpenDialog({ properties: ['openDirectory'] });
+      if (openResult.canceled || openResult.filePaths.lenght === 0) {
+        return;
+      }
+
+      const config = InternalDb.create();
+      config.upsertProject(projectId, openResult.filePaths[0], '');
     },
   },
 ];

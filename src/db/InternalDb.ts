@@ -45,4 +45,34 @@ export default class InternalDb {
 
     return InternalDb.db;
   }
+
+  public isProjectConfigured(projectId: string): boolean {
+    return this.config.projects.find((project) => project.id === projectId) !== undefined;
+  }
+
+  public getProjectPath(projectId: string): string | null {
+    const index = this.config.projects.findIndex((p) => p.id === projectId);
+    if (index === -1) {
+      return null;
+    }
+
+    const { repositoryPath, subFolder } = this.config.projects[index];
+
+    return fsPath.join(repositoryPath, subFolder);
+  }
+
+  public upsertProject(projectId: string, repositoryPath: string, subFolder: string) {
+    const existing = this.config.projects.findIndex((p) => p.id === projectId);
+    if (existing !== -1) {
+      this.config.projects[existing] = { id: projectId, repositoryPath, subFolder };
+      return;
+    }
+
+    this.config.projects.push({
+      id: projectId,
+      repositoryPath,
+      subFolder,
+    });
+    this.save();
+  }
 }
