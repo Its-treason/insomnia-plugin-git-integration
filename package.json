@@ -18,6 +18,7 @@
     "build": "tsc"
   },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "insomnia": {
     "name": "git-integration",
     "displayName": "Git integration",
