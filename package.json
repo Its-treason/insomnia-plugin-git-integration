@@ -1,0 +1,42 @@
+{
+  "name": "insomnia-plugin-git-integration",
+  "version": "3.0.0",
+  "author": "Its-Treason",
+  "description": "Sync your workspace to a Git repository.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DotfileTech/insomnia-plugin-repo-sync-3.git"
+  },
+  "keywords": [
+    "insomnia",
+    "plugin",
+    "git"
+  ],
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "main": "dist/index.js",
+  "insomnia": {
+    "name": "git-integration",
+    "displayName": "Git integration",
+    "description": "Integration for git to Sync collections into Git repositories",
+    "images": {
+      "icon": "icon.svg"
+    },
+    "applications": {
+      "core": "*"
+    }
+  },
+  "dependencies": {
+    "nedb": "^1.8.0",
+    "simple-git": "^3.17.0"
+  },
+  "homepage": "https://github.com/DotfileTech/insomnia-plugin-repo-sync-3#readme",
+  "devDependencies": {
+    "@types/nedb": "^1.8.13",
+    "@types/node": "^18.15.9",
+    "typescript": "^5.0.2"
+  }
+}
