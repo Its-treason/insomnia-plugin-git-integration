@@ -2,7 +2,7 @@ import BaseDb from './db/BaseDb';
 import { BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Workspace, WorkspaceMeta, Environment, Project } from './insomniaDbTypes';
 import { GitSavedProject, GitSavedRequest, GitSavedWorkspace, GitSavedWorkspaceMeta } from './types';
 
-async function exportProject(projectId: string): Promise<[GitSavedProject, GitSavedWorkspace[]]> {
+export async function exportProject(projectId: string): Promise<[GitSavedProject, GitSavedWorkspace[]]> {
   // Load the Project
   const projectDb = new BaseDb<Project>('Project');
   const fullProject = await projectDb.findById(projectId);
@@ -10,7 +10,12 @@ async function exportProject(projectId: string): Promise<[GitSavedProject, GitSa
     throw new Error('Project not found with id ' + projectId);
   }
 
-  const project: GitSavedProject = { id: fullProject._id, name: fullProject.name, remoteId: fullProject.remoteId };
+  const project: GitSavedProject = {
+    id: fullProject._id,
+    name: fullProject.name,
+    remoteId: fullProject.remoteId,
+    workspaceIds: [],
+  };
 
   // Load all workspaces
   const workspaceDb = new BaseDb<Workspace>('Workspace');
@@ -19,6 +24,7 @@ async function exportProject(projectId: string): Promise<[GitSavedProject, GitSa
   const savedWorkspaces: GitSavedWorkspace[] = [];
   for (const workspace of workspaces) {
     savedWorkspaces.push(await exportWorkspaceData(workspace._id));
+    project.workspaceIds.push(workspace._id);
   }
 
   return [project, savedWorkspaces];

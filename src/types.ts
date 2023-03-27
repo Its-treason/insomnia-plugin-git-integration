@@ -4,6 +4,7 @@ export type GitSavedProject = {
   name: string,
   id: string,
   remoteId: string | null,
+  workspaceIds: string[],
 }
 
 export type GitSavedWorkspace = {

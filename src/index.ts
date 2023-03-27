@@ -4,20 +4,26 @@ import { importWorkspaceData } from './importData';
 import InternalDb from './db/InternalDb';
 import { getActiveProjectId, getActiveWorkspace } from './db/localStorageUtils';
 import { join } from 'node:path';
+import exportProjectButton from './ui/exportProjectButton';
 
-(async () => {
-  //const exportData = await getSaveDataForWorkspace('wrk_1e5e0b1c2e7842308532f57616fc13e4');
+// Inject UI elements.
+// @ts-ignore
+const currentVersion = (window.gitIntegrationInjectCounter || 0) + 1;
+// @ts-ignore
+window.gitIntegrationInjectCounter = currentVersion;
 
-  //fs.writeFileSync('C:\\Users\\Timon\\AppData\\Roaming\\Insomnia\\testExport.json', JSON.stringify(exportData, null, 2));
-
-  // const raw = fs.readFileSync('C:\\Users\\Timon\\AppData\\Roaming\\Insomnia\\testExport.json');
-  // const importData = JSON.parse(raw.toString());
-
-  // await importWorkspaceData(importData);
-
+function doInject() {
   // @ts-ignore
-  //window.main.restart();
-})();
+  // Check if the window was reloaded. When it was reloaded the Global counter changed
+  if (window.gitIntegrationInjectCounter !== currentVersion) {
+    return;
+  }
+
+  exportProjectButton();
+
+  window.requestAnimationFrame(doInject);
+}
+window.requestAnimationFrame(doInject);
 
 module.exports.workspaceActions = [
   {
