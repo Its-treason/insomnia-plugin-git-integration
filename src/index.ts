@@ -5,6 +5,7 @@ import InternalDb from './db/InternalDb';
 import { getActiveProjectId, getActiveWorkspace } from './db/localStorageUtils';
 import { join } from 'node:path';
 import exportProjectButton from './ui/exportProjectButton';
+import importNewProjectButton from './ui/importNewProjectButton';
 
 // Inject UI elements.
 // @ts-ignore
@@ -20,6 +21,7 @@ function doInject() {
   }
 
   exportProjectButton();
+  importNewProjectButton();
 
   window.requestAnimationFrame(doInject);
 }
