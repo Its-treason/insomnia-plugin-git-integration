@@ -1,6 +1,28 @@
 import BaseDb from './db/BaseDb';
-import { BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Workspace, WorkspaceMeta, Environment } from './insomniaDbTypes';
-import { GitSavedRequest, GitSavedWorkspace, GitSavedWorkspaceMeta } from './types';
+import { BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Workspace, WorkspaceMeta, Environment, Project } from './insomniaDbTypes';
+import { GitSavedProject, GitSavedRequest, GitSavedWorkspace, GitSavedWorkspaceMeta } from './types';
+
+async function exportProject(projectId: string): Promise<[GitSavedProject, GitSavedWorkspace[]]> {
+  // Load the Project
+  const projectDb = new BaseDb<Project>('Project');
+  const fullProject = await projectDb.findById(projectId);
+  if (!fullProject) {
+    throw new Error('Project not found with id ' + projectId);
+  }
+
+  const project: GitSavedProject = { id: fullProject._id, name: fullProject.name, remoteId: fullProject.remoteId };
+
+  // Load all workspaces
+  const workspaceDb = new BaseDb<Workspace>('Workspace');
+  const workspaces = await workspaceDb.findBy('parentId', fullProject._id);
+
+  const savedWorkspaces: GitSavedWorkspace[] = [];
+  for (const workspace of workspaces) {
+    savedWorkspaces.push(await exportWorkspaceData(workspace._id));
+  }
+
+  return [project, savedWorkspaces];
+}
 
 // ParentId is either the WorkspaceId for TopLevel requests or an FolderId for nested requests
 async function getRequestsForParentId(

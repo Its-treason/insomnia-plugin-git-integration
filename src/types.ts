@@ -1,5 +1,11 @@
 import { BaseRequest, WorkspaceMeta, RequestGroup, RequestGroupMeta, RequestMeta, Workspace, Environment, BaseModel } from './insomniaDbTypes';
 
+export type GitSavedProject = {
+  name: string,
+  id: string,
+  remoteId: string | null,
+}
+
 export type GitSavedWorkspace = {
   name: string,
   id: string,

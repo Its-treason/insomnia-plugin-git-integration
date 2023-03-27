@@ -1,8 +1,29 @@
 import BaseDb from './db/BaseDb';
 import { exportWorkspaceData } from './exportData';
-import { Workspace, WorkspaceMeta, BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Environment } from './insomniaDbTypes';
+import { Workspace, WorkspaceMeta, BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Environment, Project } from './insomniaDbTypes';
 import OldIds from './OldIds';
-import { GitSavedRequest, GitSavedWorkspace } from './types';
+import { GitSavedRequest, GitSavedWorkspace, GitSavedProject } from './types';
+
+export async function importProject(project: GitSavedProject, workspaces: GitSavedWorkspace[]) {
+  // Upsert the Project
+  const projectDb = new BaseDb<Project>('Project');
+  projectDb.upsert({
+    _id: project.id,
+    name: project.name,
+    remoteId: project.remoteId,
+    created: Date.now(),
+    isPrivate: false,
+    modified: Date.now(),
+    parentId: null,
+    type: 'Project',
+  });
+
+  // Update all Workspaces
+  // TODO: Check if workspaces have been deleted
+  for (const workspace of workspaces) {
+    await importWorkspaceData(workspace);
+  }
+}
 
 async function upsertRequestsRecursive(
   requests: GitSavedRequest[],
