@@ -66,6 +66,8 @@ module.exports.workspaceActions = [
       const targetFile = join(path, workspaceId + '.json');
       const dataRaw = JSON.parse(fs.readFileSync(targetFile).toString());
       await importWorkspaceData(dataRaw);
+      
+      // Force Insomnia to read all data
       // @ts-ignore
       window.main.restart();
     },

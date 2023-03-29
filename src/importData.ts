@@ -18,10 +18,25 @@ export async function importProject(project: GitSavedProject, workspaces: GitSav
     type: 'Project',
   });
 
+  const workspaceDb = new BaseDb<Workspace>('Workspace');
+  const workspaceMetaDb = new BaseDb<Workspace>('WorkspaceMeta');
+  let oldWorkspaces = (await workspaceDb.findBy('parentId', project.id)).map((ws) => ws._id);
+
+  console.log(workspaces);
+
   // Update all Workspaces
-  // TODO: Check if workspaces have been deleted
   for (const workspace of workspaces) {
+    oldWorkspaces = oldWorkspaces.filter((oldWs) => oldWs !== workspace.id);
+
     await importWorkspaceData(workspace);
+  }
+
+  console.log(oldWorkspaces);
+
+  // Delete old workspaces
+  for (const oldWorkspace of oldWorkspaces) {
+    await workspaceDb.deleteBy('_id', oldWorkspace);
+    await workspaceMetaDb.deleteBy('parentId', oldWorkspace);
   }
 }
 
@@ -77,7 +92,7 @@ async function removeOldData(
 export async function importWorkspaceData(data: GitSavedWorkspace): Promise<void> {
   const workspaceDb = new BaseDb<Workspace>('Workspace');
 
-  // Collect OldIds so we can delete deleted Docs at the end
+  // Collect OldIds of Requests / Folders so we can delete deleted Docs at the end
   const oldIds = await workspaceDb.findById(data.id)
     ? OldIds.fromOldData(await exportWorkspaceData(data.id))
     : OldIds.createEmpty();
@@ -97,7 +112,7 @@ export async function importWorkspaceData(data: GitSavedWorkspace): Promise<void
     hasSeen: true,
     paneHeight: 0.5,
     paneWidth: 0.5,
-    parentId: null,
+    parentId: data.id,
     sidebarFilter: '',
     sidebarHidden: false,
     sidebarWidth: 19,
