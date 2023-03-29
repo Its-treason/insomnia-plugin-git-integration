@@ -2,6 +2,8 @@ import { getActiveProjectId } from '../../db/localStorageUtils';
 import InternalDb from '../../db/InternalDb';
 
 export default function configureGitRepoButton(projectDropdown: Element): HTMLElement {
+  // TODO: Create dialog for better configuring the git repo
+
   const configureProjectButton = document.createElement('li');
   configureProjectButton.className = 'sc-crXcEl dTKZde';
   configureProjectButton.innerHTML = `
@@ -9,7 +11,7 @@ export default function configureGitRepoButton(projectDropdown: Element): HTMLEl
       <div class="sc-kgflAQ ldFYrA">
         <i class="sc-dIouRR GdBqH fa fa-cog">
         </i>
-        Configure Git Repo
+        Configure folder location
       </div>
     </div>
   `;
