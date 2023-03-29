@@ -22,7 +22,9 @@ Insomnia data before using it.
 
 - Open the collection overview of the existing project.
 - Click on `Create` and in the dropdown choose `Configure folder location`
+
 ![](https://cdn.discordapp.com/attachments/693228572286124085/1090742892953354372/Screenshot_2023-03-29_225814.png)
+
 - Choose a folder
 - You can init a git repository in the choosen folder or an parent folder.
   - The git repository is fully optional. You can just this plugin for importing and exporting
@@ -30,7 +32,9 @@ Insomnia data before using it.
 ### Import project from git
 
 - Click the `git` symbol in the left sidebar
+
 ![](https://cdn.discordapp.com/attachments/693228572286124085/1090742892311625821/Screenshot_2023-03-29_225628.png)
+
 - Choose the folder with the `project.json` file
 - Data will be importet and Insomnia restartet
 
