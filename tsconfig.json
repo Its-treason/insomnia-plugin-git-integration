@@ -6,7 +6,7 @@
         "rootDir": "src",
         "esModuleInterop": true,
         "declaration": true,
-        "sourceMap": true
+        "inlineSourceMap": true
     },
     "include": ["src/*", "src/db/BaseDb.ts"]
 }

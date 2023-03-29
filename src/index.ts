@@ -4,8 +4,8 @@ import { importWorkspaceData } from './importData';
 import InternalDb from './db/InternalDb';
 import { getActiveProjectId, getActiveWorkspace } from './db/localStorageUtils';
 import { join } from 'node:path';
-import exportProjectButton from './ui/exportProjectButton';
 import importNewProjectButton from './ui/importNewProjectButton';
+import projectDropdown from './ui/projectDropdown';
 
 // Inject UI elements.
 // @ts-ignore
@@ -20,7 +20,7 @@ function doInject() {
     return;
   }
 
-  exportProjectButton();
+  projectDropdown();
   importNewProjectButton();
 
   window.requestAnimationFrame(doInject);
@@ -66,32 +66,9 @@ module.exports.workspaceActions = [
       const targetFile = join(path, workspaceId + '.json');
       const dataRaw = JSON.parse(fs.readFileSync(targetFile).toString());
       await importWorkspaceData(dataRaw);
-      
       // Force Insomnia to read all data
       // @ts-ignore
       window.main.restart();
-    },
-  },
-  {
-    label: 'Configure Repository',
-    icon: 'fa-cog',
-    action: async (context, models) => {
-      const projectId = getActiveProjectId();
-
-      if (projectId === 'proj_default-project') {
-        // TODO: Better error message
-        alert('Can not configure for default project create seperate')
-        return;
-      }
-
-      // @ts-ignore
-      const openResult = await window.dialog.showOpenDialog({ properties: ['openDirectory'] });
-      if (openResult.canceled || openResult.filePaths.lenght === 0) {
-        return;
-      }
-
-      const config = InternalDb.create();
-      config.upsertProject(projectId, openResult.filePaths[0], '');
     },
   },
 ];
