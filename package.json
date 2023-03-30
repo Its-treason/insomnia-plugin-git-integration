@@ -1,6 +1,6 @@
 {
   "name": "insomnia-plugin-git-integration",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Its-Treason",
   "description": "Sync your workspace to a Git repository.",
   "license": "MIT",
@@ -22,7 +22,7 @@
   "insomnia": {
     "name": "git-integration",
     "displayName": "Git integration",
-    "description": "Integration for git to Sync collections into Git repositories",
+    "description": "Integration for Git to sync Projects into Git repositories",
     "images": {
       "icon": "icon.svg"
     },
