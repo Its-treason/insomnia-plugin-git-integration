@@ -1,6 +1,6 @@
 import BaseDb from './db/BaseDb';
-import { BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Workspace, WorkspaceMeta, Environment, Project } from './insomniaDbTypes';
-import { GitSavedProject, GitSavedRequest, GitSavedWorkspace, GitSavedWorkspaceMeta } from './types';
+import { BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Workspace, WorkspaceMeta, Environment, Project, ApiSpec, UnittestSuite, UnitTest } from './insomniaDbTypes';
+import { GitSavedProject, GitSavedRequest, GitSavedUnitTestSuite, GitSavedWorkspace, GitSavedWorkspaceMeta } from './types';
 
 export async function exportProject(projectId: string): Promise<[GitSavedProject, GitSavedWorkspace[]]> {
   // Load the Project
@@ -76,6 +76,34 @@ async function getRequestsForParentId(
   return gitSavedRequests;
 }
 
+async function getTestSuites(workspaceId: string): Promise<GitSavedUnitTestSuite[]> {
+  const savedUnittestSuites: GitSavedUnitTestSuite[] = [];
+
+  const unitTestSuitesDb = new BaseDb<UnittestSuite>('UnitTestSuite');
+  const unittestDb = new BaseDb<UnitTest>('UnitTest');
+
+  const unitTestSuites = await unitTestSuitesDb.findBy('parentId', workspaceId);
+
+  for (const testSuite of unitTestSuites) {
+    const tests = await unittestDb.findBy('parentId', testSuite._id);
+
+    savedUnittestSuites.push({
+      tests,
+      testSuite,
+    });
+  }
+
+  return savedUnittestSuites;
+}
+
+async function getApiSpec(workspaceId: string): Promise<ApiSpec | null> {
+  const apiSpecDb = new BaseDb<ApiSpec>('ApiSpec');
+
+  const apiSpecs = await apiSpecDb.findBy('parentId', workspaceId);
+
+  return apiSpecs[0] ?? null;
+}
+
 export async function exportWorkspaceData(workspaceId: string): Promise<GitSavedWorkspace> {
   // Find workspace
   const workspaceDb = new BaseDb<Workspace>('Workspace');
@@ -129,6 +157,9 @@ export async function exportWorkspaceData(workspaceId: string): Promise<GitSaved
     .filter((env) => env.isPrivate === false);
   environments.unshift(baseEnvironment);
 
+  const apiSpec = await getApiSpec(workspaceId);
+  const unitTestSuites = await getTestSuites(workspaceId);
+
   return {
     id: workspaceId,
     name,
@@ -136,5 +167,7 @@ export async function exportWorkspaceData(workspaceId: string): Promise<GitSaved
     meta,
     requests,
     environments,
+    apiSpec,
+    unitTestSuites,
   };
 }

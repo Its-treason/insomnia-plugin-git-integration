@@ -65,7 +65,6 @@ export default function projectDropdown() {
   }
 
   let gitClient: SimpleGit;
-
   try {
     gitClient = simpleGit(path);
 
@@ -74,7 +73,10 @@ export default function projectDropdown() {
       buttonGroup.appendChild(gitPushButton(projectDropdown, gitClient, statusResult));
       buttonGroup.appendChild(gitFetchButton(projectDropdown, gitClient, statusResult));
       buttonGroup.appendChild(gitPullButton(projectDropdown, gitClient, statusResult));
-    }).catch()
+    }).catch((reason) => {
+      // This errors, when no git repo is inited
+      // TODO: Create init Repo button
+    });
   } catch {
     // TODO: Show these buttons as disabled & Add Option to init git dir
     return;

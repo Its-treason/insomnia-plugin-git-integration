@@ -5,10 +5,12 @@ export default class OldIds {
     private environmentIds: string[],
     private requestIds: string[],
     private requestGroupIds: string[],
+    private testSuites: string[],
+    private tests: string[],
   ) {}
 
   public static createEmpty(): OldIds {
-    return new OldIds([], [], []);
+    return new OldIds([], [], [], [], []);
   }
 
   public static fromOldData(data: GitSavedWorkspace): OldIds {
@@ -19,7 +21,16 @@ export default class OldIds {
 
     OldIds.getIdsRecursive(data.requests, requestIds, requestGroupIds);
 
-    return new OldIds(environmentIds, requestIds, requestGroupIds);
+    const tests = [];
+    const testSuites = data.unitTestSuites.map((testSuite) => {
+      for (const test of testSuite.tests) {
+        tests.push(test._id);
+      }
+
+      return testSuite.testSuite._id;
+    })
+
+    return new OldIds(environmentIds, requestIds, requestGroupIds, testSuites, tests);
   }
 
   private static getIdsRecursive(requests: GitSavedRequest[], requestIds: string[], requestGroupIds: string[]) {
@@ -61,6 +72,26 @@ export default class OldIds {
     const index = this.requestGroupIds.indexOf(id);
     if (index !== -1) {
       this.requestGroupIds.splice(index, 1);
+    }
+  }
+
+  public getTestSuites(): string[] {
+    return this.testSuites;
+  }
+  public removeTestSuites(id: string): void {
+    const index = this.testSuites.indexOf(id);
+    if (index !== -1) {
+      this.testSuites.splice(index, 1);
+    }
+  }
+
+  public getTests(): string[] {
+    return this.tests;
+  }
+  public removeTest(id: string): void {
+    const index = this.tests.indexOf(id);
+    if (index !== -1) {
+      this.tests.splice(index, 1);
     }
   }
 }

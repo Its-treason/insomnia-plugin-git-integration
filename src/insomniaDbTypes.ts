@@ -30,7 +30,7 @@ export type Project = {
 
 // Workspace
 export type Workspace = {
-  scope: 'design'|'collection',
+  scope: 'design' | 'collection',
 } & BaseModel;
 
 // WorkspaceMeta
@@ -130,4 +130,23 @@ export type RequestGroup = {
 // RequestGroupMeta
 export type RequestGroupMeta = {
   collapsed: boolean,
+} & BaseModel;
+
+// ApiSpec
+export type ApiSpec = {
+  fileName: string;
+  contentType: 'json' | 'yaml';
+  contents: string;
+} & BaseModel
+
+// Unittest Suite
+export type UnittestSuite = {
+  name: string,
+} & BaseModel
+
+// Unittest
+export type UnitTest = {
+  name: string;
+  code: string;
+  requestId: string | null;
 } & BaseModel;

@@ -1,4 +1,4 @@
-import { BaseRequest, WorkspaceMeta, RequestGroup, RequestGroupMeta, RequestMeta, Workspace, Environment, BaseModel } from './insomniaDbTypes';
+import { BaseRequest, WorkspaceMeta, RequestGroup, RequestGroupMeta, RequestMeta, Workspace, Environment, BaseModel, UnittestSuite, UnitTest, ApiSpec } from './insomniaDbTypes';
 
 export type GitSavedProject = {
   name: string,
@@ -14,6 +14,13 @@ export type GitSavedWorkspace = {
   meta: GitSavedWorkspaceMeta,
   requests: GitSavedRequest[],
   environments: Environment[],
+  apiSpec?: ApiSpec,
+  unitTestSuites: GitSavedUnitTestSuite[],
+}
+
+export type GitSavedUnitTestSuite = {
+  testSuite: UnittestSuite,
+  tests: UnitTest[],
 }
 
 export type GitSavedRequest = {

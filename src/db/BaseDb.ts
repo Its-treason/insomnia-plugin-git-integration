@@ -2,7 +2,7 @@ import Nedb from 'nedb';
 import fsPath from 'node:path';
 import { BaseModel } from '../insomniaDbTypes';
 
-type DbTargets = 'Request' | 'RequestMeta' | 'RequestGroup' | 'RequestGroupMeta' | 'Workspace' | 'WorkspaceMeta' | 'Project' | 'Environment';
+type DbTargets = 'Request' | 'RequestMeta' | 'RequestGroup' | 'RequestGroupMeta' | 'Workspace' | 'WorkspaceMeta' | 'Project' | 'Environment' | 'ApiSpec' | 'UnitTest' | 'UnitTestSuite';
 
 export default class BaseDb<T extends BaseModel> {
   private neDb: Nedb;

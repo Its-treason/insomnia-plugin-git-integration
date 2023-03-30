@@ -1,6 +1,6 @@
 import BaseDb from './db/BaseDb';
 import { exportWorkspaceData } from './exportData';
-import { Workspace, WorkspaceMeta, BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Environment, Project } from './insomniaDbTypes';
+import { Workspace, WorkspaceMeta, BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Environment, Project, ApiSpec, UnittestSuite, UnitTest } from './insomniaDbTypes';
 import OldIds from './OldIds';
 import { GitSavedRequest, GitSavedWorkspace, GitSavedProject } from './types';
 
@@ -21,8 +21,6 @@ export async function importProject(project: GitSavedProject, workspaces: GitSav
   const workspaceDb = new BaseDb<Workspace>('Workspace');
   const workspaceMetaDb = new BaseDb<Workspace>('WorkspaceMeta');
   let oldWorkspaces = (await workspaceDb.findBy('parentId', project.id)).map((ws) => ws._id);
-
-  console.log(workspaces);
 
   // Update all Workspaces
   for (const workspace of workspaces) {
@@ -73,19 +71,29 @@ async function removeOldData(
   requestGroupDb: BaseDb<RequestGroup>,
   requestGroupMetaDb: BaseDb<RequestGroupMeta>,
   environmentDb: BaseDb<Environment>,
+  testSuitesDb: BaseDb<UnittestSuite>,
+  testDb: BaseDb<UnitTest>,
 ) {
   for (const envId of oldIds.getEnvironmentIds()) {
-    environmentDb.deleteBy('_id', envId);
+    await environmentDb.deleteBy('_id', envId);
   }
 
   for (const requestId of oldIds.getRequestIds()) {
-    requestDb.deleteBy('_id', requestId);
-    requestMetaDb.deleteBy('parentId', requestId);
+    await requestDb.deleteBy('_id', requestId);
+    await requestMetaDb.deleteBy('parentId', requestId);
   }
 
   for (const requestGroupId of oldIds.getRequestGroupId()) {
-    requestGroupDb.deleteBy('_id', requestGroupId);
-    requestGroupMetaDb.deleteBy('parentId', requestGroupId);
+    await requestGroupDb.deleteBy('_id', requestGroupId);
+    await requestGroupMetaDb.deleteBy('parentId', requestGroupId);
+  }
+
+  for (const testSuites of oldIds.getTestSuites()) {
+    await testSuitesDb.deleteBy('_id', testSuites);
+  }
+
+  for (const test of oldIds.getTests()) {
+    await testDb.deleteBy('_id', test);
   }
 }
 
@@ -135,5 +143,25 @@ export async function importWorkspaceData(data: GitSavedWorkspace): Promise<void
     oldIds.removeEnvironmentId(environment._id);
   }
 
-  removeOldData(oldIds, requestDb, requestMetaDb, requestGroupDb, requestGroupMetaDb, environmentDb);
+  if (data.apiSpec) {
+    const apiSpecDb = new BaseDb<ApiSpec>('ApiSpec');
+    apiSpecDb.upsert(data.apiSpec);
+  }
+
+  const unitTestSuitesDb = new BaseDb<UnittestSuite>('UnitTestSuite');
+  const unitTestDb = new BaseDb<UnitTest>('UnitTest');
+
+  for (const testSuite of data.unitTestSuites) {
+    await unitTestSuitesDb.upsert(testSuite.testSuite);
+    oldIds.removeTestSuites(testSuite.testSuite._id);
+
+    for (const test of testSuite.tests) {
+      await unitTestDb.upsert(test);
+      oldIds.removeTest(test._id);
+    }
+  }
+
+  await removeOldData(
+    oldIds, requestDb, requestMetaDb, requestGroupDb, requestGroupMetaDb, environmentDb, unitTestSuitesDb, unitTestDb,
+  );
 }
