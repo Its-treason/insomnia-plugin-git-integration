@@ -8,6 +8,7 @@ import gitCommitButton from './gitCommitButton';
 import gitPushButton from './gitPushButton';
 import gitPullButton from './gitPullButton';
 import gitFetchButton from './gitFetchButton';
+import gitInitButton from './gitInitButton';
 
 export default function projectDropdown() {
   // Check if the dropdown is opened
@@ -64,21 +65,16 @@ export default function projectDropdown() {
     return;
   }
 
-  let gitClient: SimpleGit;
-  try {
-    gitClient = simpleGit(path);
+  const gitClient = simpleGit(path);
 
-    gitClient.status().then(statusResult => {
-      buttonGroup.appendChild(gitCommitButton(projectDropdown, gitClient));
-      buttonGroup.appendChild(gitPushButton(projectDropdown, gitClient, statusResult));
-      buttonGroup.appendChild(gitFetchButton(projectDropdown, gitClient, statusResult));
-      buttonGroup.appendChild(gitPullButton(projectDropdown, gitClient, statusResult));
-    }).catch((reason) => {
-      // This errors, when no git repo is inited
-      // TODO: Create init Repo button
-    });
-  } catch {
-    // TODO: Show these buttons as disabled & Add Option to init git dir
-    return;
-  }
+  gitClient.status().then(statusResult => {
+    buttonGroup.appendChild(gitCommitButton(projectDropdown, gitClient));
+    buttonGroup.appendChild(gitPushButton(projectDropdown, gitClient, statusResult));
+    buttonGroup.appendChild(gitFetchButton(projectDropdown, gitClient, statusResult));
+    buttonGroup.appendChild(gitPullButton(projectDropdown, gitClient, statusResult));
+  }).catch((reason) => {
+    // This errors, when no git repo is inited
+    console.error('Not showing git: ' + reason);
+    buttonGroup.appendChild(gitInitButton(projectDropdown, gitClient))
+  });
 }

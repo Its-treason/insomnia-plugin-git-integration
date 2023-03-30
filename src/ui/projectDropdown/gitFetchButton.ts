@@ -1,4 +1,3 @@
-import { getActiveProjectId } from '../../db/localStorageUtils';
 import { SimpleGit, StatusResult } from 'simple-git';
 
 export default function gitFetchButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
