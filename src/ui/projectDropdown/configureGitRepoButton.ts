@@ -1,5 +1,7 @@
 import { getActiveProjectId } from '../../db/localStorageUtils';
 import InternalDb from '../../db/InternalDb';
+import alertModal from '../react/alertModal';
+import renderModal from '../react/renderModal';
 
 export default function configureGitRepoButton(projectDropdown: Element): HTMLElement {
   // TODO: Create dialog for better configuring the git repo
@@ -11,7 +13,7 @@ export default function configureGitRepoButton(projectDropdown: Element): HTMLEl
       <div class="sc-kgflAQ ldFYrA">
         <i class="sc-dIouRR GdBqH fa fa-cog">
         </i>
-        Configure folder location
+        Configure project folder
       </div>
     </div>
   `;
@@ -20,10 +22,11 @@ export default function configureGitRepoButton(projectDropdown: Element): HTMLEl
     projectDropdown.remove();
 
     const projectId = getActiveProjectId();
-
     if (projectId === 'proj_default-project' || !projectId) {
-      // TODO: Better error message
-      alert('Can not configure for default project create seperate')
+      await renderModal(alertModal(
+        'Cannnot configure Folder',
+        'Cannot configure folder for default repository. Please create a now Project',
+      ));
       return;
     }
 

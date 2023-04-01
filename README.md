@@ -58,7 +58,6 @@ This plugins injects new Buttons into the Insomnia ui.
 
 ## TODO
 
-- Replace `alert()` with dialogs
 - Better configuration options
 - Custom commit messages
 - UI for Resolving Merge-Conflicts

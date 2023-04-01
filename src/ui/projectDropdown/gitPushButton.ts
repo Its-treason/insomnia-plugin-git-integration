@@ -1,4 +1,6 @@
 import { SimpleGit, StatusResult } from 'simple-git';
+import alertModal from '../react/alertModal';
+import renderModal from '../react/renderModal';
 
 export default function gitPushButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
   const gitPushButton = document.createElement('li');
@@ -18,17 +20,17 @@ export default function gitPushButton(projectDropdown: Element, gitClient: Simpl
 
     try {
       const branch = await gitClient.branchLocal();
-      const origin = await gitClient.getRemotes();
-      if (!origin) {
-        alert('Not origin defined!')
+      const remotes = await gitClient.getRemotes();
+      if (!remotes[0]) {
+        await renderModal(alertModal('Unable to push', 'No remotes defined for git repository'));
         return;
       }
 
-      const pushResult = await gitClient.push(origin[0].name, branch.current);
+      const pushResult = await gitClient.push(remotes[0].name, branch.current);
 
-      alert(`Pushed ${pushResult.pushed.length} commits to ${origin[0].name}/${branch.current}`);
+      await renderModal(alertModal('Pushed commits', `Pushed ${pushResult.pushed.length} commits to ${remotes[0].name}/${branch.current}`));
     } catch (error) {
-      alert(`Failed to push with message: ${error}`);
+      await renderModal(alertModal('Push failed', 'An error occurred while pushing commits', error));
     }
   });
 

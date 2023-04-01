@@ -1,6 +1,6 @@
 {
   "name": "insomnia-plugin-git-integration",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "Its-Treason",
   "description": "Sync your workspace to a Git repository.",
   "license": "MIT",
@@ -32,12 +32,16 @@
   },
   "dependencies": {
     "nedb": "^1.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "simple-git": "^3.17.0"
   },
   "homepage": "https://github.com/Its-treason/insomnia-plugin-git-integration#readme",
   "devDependencies": {
     "@types/nedb": "^1.8.13",
     "@types/node": "^18.15.9",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
     "typescript": "^5.0.2"
   }
 }

@@ -1,4 +1,6 @@
 import { SimpleGit, StatusResult } from 'simple-git';
+import alertModal from '../react/alertModal';
+import renderModal from '../react/renderModal';
 
 export default function gitFetchButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
   const gitFetchButton = document.createElement('li');
@@ -19,7 +21,7 @@ export default function gitFetchButton(projectDropdown: Element, gitClient: Simp
     try {
       await gitClient.fetch();
     } catch (error) {
-      alert(`Failed to fetch with message: ${error}`);
+      await renderModal(alertModal('Fetch failed', 'An error occurred while fetching', error));
     }
   });
 

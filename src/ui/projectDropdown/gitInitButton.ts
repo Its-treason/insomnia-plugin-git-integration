@@ -1,4 +1,6 @@
 import { SimpleGit } from 'simple-git';
+import alertModal from '../react/alertModal';
+import renderModal from '../react/renderModal';
 
 export default function gitInitButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitInitButton = document.createElement('li');
@@ -19,7 +21,7 @@ export default function gitInitButton(projectDropdown: Element, gitClient: Simpl
     try {
       await gitClient.init();
     } catch (error) {
-      alert(`Failed to fetch with message: ${error}`);
+      await renderModal(alertModal('Init failed', 'An error occurred while initialising the Git repository', error));
     }
   });
 

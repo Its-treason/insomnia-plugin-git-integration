@@ -3,6 +3,8 @@ import InternalDb from '../../db/InternalDb';
 import fs from 'node:fs';
 import { exportProject } from '../../exportData';
 import { join } from 'node:path';
+import renderModal from '../react/renderModal';
+import alertModal from '../react/alertModal';
 
 export default function exportProjectButton(projectDropdown: Element): HTMLElement {
   const exportProjectButton = document.createElement('li');
@@ -22,15 +24,16 @@ export default function exportProjectButton(projectDropdown: Element): HTMLEleme
 
     const projectId = getActiveProjectId();
     if (!projectId) {
-      alert('INTERNAL ERROR: Not ProjectId in LocalStorage')
       return;
     }
 
     const config = InternalDb.create();
     const path = config.getProjectPath(projectId);
     if (!path || projectId === 'proj_default-project') {
-      // TODO: Better error message
-      alert('Project is not configured or default project')
+      await renderModal(alertModal(
+        'Cannot export Project',
+        'You must first configure the project folder before exporting the project',
+      ));
       return;
     }
 

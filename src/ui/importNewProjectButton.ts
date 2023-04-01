@@ -3,7 +3,8 @@ import InternalDb from '../db/InternalDb';
 import { importProject } from '../importData';
 import { GitSavedProject, GitSavedWorkspace } from '../types';
 import fs from 'node:fs';
-import path from 'node:path';
+import alertModal from './react/alertModal';
+import renderModal from './react/renderModal';
 
 export default function importNewProjectButton() {
   const createProjectBtn = document.querySelector('i[data-testid="CreateProjectButton"]');
@@ -37,7 +38,10 @@ export default function importNewProjectButton() {
     const targetDir = openResult.filePaths[0];
     const projectFile = join(targetDir, 'project.json');
     if (!fs.existsSync(projectFile)) {
-      alert('Dir does not include project.json file');
+      await renderModal(alertModal(
+        'Invalid folder',
+        'This folder does not contain files to import (e.g. "project.json", "wrk_*.json")',
+      ));
       return;
     }
 

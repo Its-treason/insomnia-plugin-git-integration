@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import { join } from 'node:path';
 import { GitSavedProject, GitSavedWorkspace } from '../../types';
 import { importProject } from '../../importData';
+import alertModal from '../react/alertModal';
+import renderModal from '../react/renderModal';
 
 export default function importProjectButton(projectDropdown: Element): HTMLElement {
   const importProjectButton = document.createElement('li');
@@ -23,15 +25,17 @@ export default function importProjectButton(projectDropdown: Element): HTMLEleme
 
     const projectId = getActiveProjectId();
     if (!projectId) {
-      alert('INTERNAL ERROR: Not ProjectId in LocalStorage')
+      await renderModal(alertModal('Internal error', 'No ProjectId found in LocalStorage'));
       return;
     }
 
     const config = InternalDb.create();
     const path = config.getProjectPath(projectId)
     if (!path || projectId === 'proj_default-project') {
-      // TODO: Better error message
-      alert('Project is not configured or default project')
+      await renderModal(alertModal(
+        'Cannot import Project',
+        'You must first configure the project folder before exporting the project',
+      ));
       return;
     }
 

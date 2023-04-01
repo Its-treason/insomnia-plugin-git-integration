@@ -6,7 +6,8 @@
         "rootDir": "src",
         "esModuleInterop": true,
         "declaration": true,
-        "inlineSourceMap": true
+        "inlineSourceMap": true,
+        "jsx": "react"
     },
     "include": ["src/*", "src/db/BaseDb.ts"]
 }

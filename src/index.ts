@@ -6,6 +6,8 @@ import { getActiveProjectId, getActiveWorkspace } from './db/localStorageUtils';
 import { join } from 'node:path';
 import importNewProjectButton from './ui/importNewProjectButton';
 import projectDropdown from './ui/projectDropdown';
+import alertModal from './ui/react/alertModal';
+import renderModal from './ui/react/renderModal';
 
 // Inject UI elements.
 // @ts-ignore
@@ -38,8 +40,10 @@ module.exports.workspaceActions = [
       const config = InternalDb.create();
       const path = config.getProjectPath(projectId);
       if (!path || projectId === 'proj_default-project') {
-        // TODO: Better error message
-        alert('Project is not configured or default project')
+        await renderModal(alertModal(
+          'Cannot export workspace',
+          'You must first configure the project folder before exporting',
+        ));
         return;
       }
 
@@ -58,8 +62,10 @@ module.exports.workspaceActions = [
       const config = InternalDb.create();
       const path = config.getProjectPath(projectId)
       if (!path || projectId === 'proj_default-project') {
-        // TODO: Better error message
-        alert('Project is not configured or default project')
+        await renderModal(alertModal(
+          'Cannot import workspace',
+          'You must first configure the project folder before importing',
+        ));
         return;
       }
 
