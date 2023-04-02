@@ -8,7 +8,6 @@ import gitCommitButton from './gitCommitButton';
 import gitPushButton from './gitPushButton';
 import gitPullButton from './gitPullButton';
 import gitFetchButton from './gitFetchButton';
-import gitInitButton from './gitInitButton';
 
 export default function projectDropdown() {
   // Check if the dropdown is opened
@@ -45,26 +44,24 @@ export default function projectDropdown() {
   buttonGroup.className = 'sc-hAZoDl gNdbbO';
   li.appendChild(buttonGroup);
 
-  buttonGroup.appendChild(exportProjectButton(projectDropdown));
-  buttonGroup.appendChild(importProjectButton(projectDropdown));
-  buttonGroup.appendChild(configureGitRepoButton(projectDropdown));
-
-  // Git Buttons
   const projectId = getActiveProjectId();
-  if (!projectId) {
-    // TODO: Check this at the beginning and show disabled buttons
-    console.error('Not showing git: No projectId');
-    return;
-  }
-
   const config = InternalDb.create();
   const path = config.getProjectPath(projectId);
-  if (!path || projectId === 'proj_default-project') {
-    // TODO: Show these buttons as disabled
-    console.error('Not showing git: Invalid path');
+
+  // proj_default-project is the default 'Insomnia' project. We cant import / export that
+  if (projectId === 'proj_default-project') {
     return;
   }
+  buttonGroup.appendChild(configureGitRepoButton(projectDropdown));
 
+  // Don't show export / import btns when path is not configured
+  if (!path) {
+    return;
+  }
+  buttonGroup.appendChild(exportProjectButton(projectDropdown));
+  buttonGroup.appendChild(importProjectButton(projectDropdown));
+
+  // Git buttons. Will only be added when "git status" succeeds
   const gitClient = simpleGit(path);
 
   gitClient.status().then(statusResult => {
@@ -72,9 +69,5 @@ export default function projectDropdown() {
     buttonGroup.appendChild(gitPushButton(projectDropdown, gitClient, statusResult));
     buttonGroup.appendChild(gitFetchButton(projectDropdown, gitClient, statusResult));
     buttonGroup.appendChild(gitPullButton(projectDropdown, gitClient, statusResult));
-  }).catch((reason) => {
-    // This errors, when no git repo is inited
-    console.error('Not showing git: ' + reason);
-    buttonGroup.appendChild(gitInitButton(projectDropdown, gitClient))
-  });
+  }).catch((reason) => {}); // Error occurres when git is not inited. No need to handle that
 }

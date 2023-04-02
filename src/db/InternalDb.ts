@@ -1,12 +1,15 @@
 import fsPath from 'node:path';
 import fs from 'node:fs';
 
+export type ProjectConfig = {
+  id: string,
+  repositoryPath: string | null,
+  remote: string | null,
+  // TODO: For later, enable Sync using GitHub / GitLab OAuth-Apis (#1)
+}
+
 type InternalConfig = {
-  projects: {
-    id: string,
-    repositoryPath: string,
-    subFolder: string,
-  }[],
+  projects: ProjectConfig[],
 };
 
 export default class InternalDb {
@@ -51,28 +54,30 @@ export default class InternalDb {
   }
 
   public getProjectPath(projectId: string): string | null {
-    const index = this.config.projects.findIndex((p) => p.id === projectId);
-    if (index === -1) {
-      return null;
-    }
-
-    const { repositoryPath, subFolder } = this.config.projects[index];
-
-    return fsPath.join(repositoryPath, subFolder);
+    return this.getProject(projectId).repositoryPath;
   }
 
-  public upsertProject(projectId: string, repositoryPath: string, subFolder: string) {
-    const existing = this.config.projects.findIndex((p) => p.id === projectId);
-    if (existing !== -1) {
-      this.config.projects[existing] = { id: projectId, repositoryPath, subFolder };
+  public getProject(projectId: string): ProjectConfig {
+    const index = this.config.projects.findIndex((p) => p.id === projectId);
+    if (index === -1) {
+      return {
+        id: projectId,
+        remote: null,
+        repositoryPath: null,
+      };
+    }
+
+    return this.config.projects[index];
+  }
+
+  public upsertProject(project: ProjectConfig) {
+    const existingIndex = this.config.projects.findIndex((p) => p.id === project.id);
+    if (existingIndex !== -1) {
+      this.config.projects[existingIndex] = project;
       return;
     }
 
-    this.config.projects.push({
-      id: projectId,
-      repositoryPath,
-      subFolder,
-    });
+    this.config.projects.push(project);
     this.save();
   }
 }

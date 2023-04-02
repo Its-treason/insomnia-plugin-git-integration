@@ -1,6 +1,8 @@
 import { SimpleGit, StatusResult } from 'simple-git';
 import renderModal from '../react/renderModal';
 import alertModal from '../react/alertModal';
+import InternalDb from '../../db/InternalDb';
+import { getActiveProjectId } from '../../db/localStorageUtils';
 
 export default function gitPullButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
   const gitPullButton = document.createElement('li');
@@ -26,7 +28,17 @@ export default function gitPullButton(projectDropdown: Element, gitClient: Simpl
         return;
       }
 
-      const pullResult = await gitClient.pull(remotes[0].name, branch.current);
+      const projectId = getActiveProjectId();
+      if (!projectId) {
+        await renderModal(alertModal('Internal error', 'No ProjectId found in LocalStorage'));
+        return;
+      }
+
+      const projectConfigDb = InternalDb.create();
+      const projectConfig = projectConfigDb.getProject(projectId)
+
+      const remote = projectConfig.remote ?? remotes[0].name;
+      const pullResult = await gitClient.pull(remote, branch.current);
 
       await renderModal(alertModal(
         'Pull succeded',

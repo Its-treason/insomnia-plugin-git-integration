@@ -1,6 +1,8 @@
 import { SimpleGit, StatusResult } from 'simple-git';
 import alertModal from '../react/alertModal';
 import renderModal from '../react/renderModal';
+import { getActiveProjectId } from '../../db/localStorageUtils';
+import InternalDb from '../../db/InternalDb';
 
 export default function gitPushButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
   const gitPushButton = document.createElement('li');
@@ -26,7 +28,18 @@ export default function gitPushButton(projectDropdown: Element, gitClient: Simpl
         return;
       }
 
-      const pushResult = await gitClient.push(remotes[0].name, branch.current);
+      const projectId = getActiveProjectId();
+      if (!projectId) {
+        await renderModal(alertModal('Internal error', 'No ProjectId found in LocalStorage'));
+        return;
+      }
+
+      const projectConfigDb = InternalDb.create();
+      const projectConfig = projectConfigDb.getProject(projectId)
+
+      const remote = projectConfig.remote ?? remotes[0].name;
+
+      const pushResult = await gitClient.push(remote, branch.current);
 
       await renderModal(alertModal('Pushed commits', `Pushed ${pushResult.pushed.length} commits to ${remotes[0].name}/${branch.current}`));
     } catch (error) {

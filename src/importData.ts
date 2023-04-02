@@ -29,8 +29,6 @@ export async function importProject(project: GitSavedProject, workspaces: GitSav
     await importWorkspaceData(workspace);
   }
 
-  console.log(oldWorkspaces);
-
   // Delete old workspaces
   for (const oldWorkspace of oldWorkspaces) {
     await workspaceDb.deleteBy('_id', oldWorkspace);

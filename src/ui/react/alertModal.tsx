@@ -1,6 +1,15 @@
-import React, { FC, useContext } from 'react';
+import React, { CSSProperties, FC, useContext } from 'react';
 import BaseModal from './BaseModal';
 import UnmountContext from './UnmountContext';
+
+const errorBoxStyles: CSSProperties = {
+  marginTop: 8,
+  background: 'var(--hl-xs)',
+  padding: 'var(--padding-xs) var(--padding-sm)',
+  color: 'var(--color-font)',
+  border: '1px solid var(--hl-sm)',
+  fontSize: '.9em',
+}
 
 export default function alertModal(title: string, body: string, extBody?: string): FC {
   function AlertModal() {
@@ -14,7 +23,7 @@ export default function alertModal(title: string, body: string, extBody?: string
         <>
           {body}
           {extBody ? (
-            <pre>{extBody}</pre>
+            <pre style={errorBoxStyles}>{String(extBody)}</pre>
           ) : null}
         </>
       </BaseModal>

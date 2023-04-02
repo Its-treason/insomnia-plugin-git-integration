@@ -1,11 +1,9 @@
 import { getActiveProjectId } from '../../db/localStorageUtils';
-import InternalDb from '../../db/InternalDb';
 import alertModal from '../react/alertModal';
 import renderModal from '../react/renderModal';
+import configureProject from '../react/configureProject';
 
 export default function configureGitRepoButton(projectDropdown: Element): HTMLElement {
-  // TODO: Create dialog for better configuring the git repo
-
   const configureProjectButton = document.createElement('li');
   configureProjectButton.className = 'sc-crXcEl dTKZde';
   configureProjectButton.innerHTML = `
@@ -13,7 +11,7 @@ export default function configureGitRepoButton(projectDropdown: Element): HTMLEl
       <div class="sc-kgflAQ ldFYrA">
         <i class="sc-dIouRR GdBqH fa fa-cog">
         </i>
-        Configure project folder
+        Configure project
       </div>
     </div>
   `;
@@ -30,14 +28,7 @@ export default function configureGitRepoButton(projectDropdown: Element): HTMLEl
       return;
     }
 
-    // @ts-ignore
-    const openResult = await window.dialog.showOpenDialog({ properties: ['openDirectory'] });
-    if (openResult.canceled || openResult.filePaths.lenght === 0) {
-      return;
-    }
-
-    const config = InternalDb.create();
-    config.upsertProject(projectId, openResult.filePaths[0], '');
+    await renderModal(configureProject(projectId));
   });
 
   // Hover effect
