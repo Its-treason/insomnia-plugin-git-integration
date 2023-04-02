@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import UnmountContext from './UnmountContext';
 
-export default async function renderModal(Fn: React.FC): Promise<void> {
+export default async function renderModal<T extends unknown>(Fn: React.FC): Promise<T | undefined> {
   let domNode = document.getElementById('git-integration-root');
   if (!domNode) {
     domNode = document.createElement('div');
@@ -12,9 +12,9 @@ export default async function renderModal(Fn: React.FC): Promise<void> {
   return new Promise((resolve) => {
     const root = createRoot(domNode, { identifierPrefix: 'git-integration' });
 
-    const unmount = () => {
+    const unmount = (value: T | undefined) => {
       root.unmount();
-      resolve();
+      resolve(value);
     }
 
     root.render((
