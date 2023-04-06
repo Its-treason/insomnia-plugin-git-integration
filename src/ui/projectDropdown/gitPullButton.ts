@@ -1,10 +1,10 @@
-import { SimpleGit, StatusResult } from 'simple-git';
+import { SimpleGit } from 'simple-git';
 import renderModal from '../react/renderModal';
 import alertModal from '../react/alertModal';
 import InternalDb from '../../db/InternalDb';
 import { getActiveProjectId } from '../../db/localStorageUtils';
 
-export default function gitPullButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
+export default function gitPullButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitPullButton = document.createElement('li');
   gitPullButton.className = 'sc-crXcEl dTKZde';
   gitPullButton.innerHTML = `
@@ -35,7 +35,7 @@ export default function gitPullButton(projectDropdown: Element, gitClient: Simpl
       }
 
       const projectConfigDb = InternalDb.create();
-      const projectConfig = projectConfigDb.getProject(projectId)
+      const projectConfig = projectConfigDb.getProject(projectId);
 
       const remote = projectConfig.remote ?? remotes[0].name;
       const pullResult = await gitClient.pull(remote, branch.current);

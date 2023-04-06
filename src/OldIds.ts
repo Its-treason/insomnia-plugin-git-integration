@@ -28,7 +28,7 @@ export default class OldIds {
       }
 
       return testSuite.testSuite._id;
-    })
+    });
 
     return new OldIds(environmentIds, requestIds, requestGroupIds, testSuites, tests);
   }

@@ -1,5 +1,5 @@
-import React, { CSSProperties, useCallback, useMemo, useState } from 'react'
-import { ProjectConfig } from '../../../db/InternalDb'
+import React, { CSSProperties, useCallback, useMemo, useState } from 'react';
+import { ProjectConfig } from '../../../db/InternalDb';
 import fs from 'node:fs';
 import ErrorBox from '../ErrorBox';
 import produce from 'immer';
@@ -9,7 +9,7 @@ const buttonStyles: CSSProperties = {
   background: 'var(--color-surprise)',
   color: 'var(--color-font-surprise)',
   borderRadius: 'var(--radius-sm)',
-}
+};
 
 type ProjectPathInputProps = {
   current: string | null,

@@ -24,7 +24,7 @@ export default function SelectRemote({ setProject, remotes, currentRemote }: Sel
   if (remotes.length === 0) {
     return (
       <ErrorBox>
-        No remotes defined. Use "git remote add REMOTE" to add a remote repository.
+        No remotes defined. Use &quot;git remote add REMOTE&quot; to add a remote repository.
         See <a href='https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes'>Working with Remotes</a> for help about remotes
       </ErrorBox>
     );

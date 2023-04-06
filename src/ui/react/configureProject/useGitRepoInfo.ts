@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react';
 import simpleGit from 'simple-git';
 
 type GitRepoInfo = {
-  commitsAhead: Number,
-  commitsBehind: Number,
+  commitsAhead: number,
+  commitsBehind: number,
   currentBranch: string | null,
   stagedFiles: string[],
   unstagedFiles: string[],
@@ -19,7 +19,7 @@ const defaultInfo: GitRepoInfo = {
   remotes: [],
   unstagedFiles: [],
   stagedFiles: [],
-}
+};
 
 export default function useGitRepoInfo(path: string): [ GitRepoInfo, () => void ] {
   const [gitRepoInfo, setGitRepoInfo] = useState(defaultInfo);
@@ -48,7 +48,9 @@ export default function useGitRepoInfo(path: string): [ GitRepoInfo, () => void 
       info.remotes = remotes.map((remote) => remote.name);
 
       setGitRepoInfo(info);
-    })();
+    })().catch((error) => {
+      console.error('Error while fetching git repo info', error);
+    });
   }, [path]);
 
   useEffect(() => {

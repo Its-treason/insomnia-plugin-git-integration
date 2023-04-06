@@ -1,6 +1,6 @@
 function superTrim(char: string, target: string): string {
-  let pattern = new RegExp("^" + char + "+|" + char + "+$", "g");
-  let newStr = target.replace(pattern, "");
+  const pattern = new RegExp('^' + char + '+|' + char + '+$', 'g');
+  const newStr = target.replace(pattern, '');
   return newStr;
 }
 

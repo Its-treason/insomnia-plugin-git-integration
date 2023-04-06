@@ -7,7 +7,7 @@ import { GitSavedRequest, GitSavedWorkspace, GitSavedProject } from './types';
 export async function importProject(project: GitSavedProject, workspaces: GitSavedWorkspace[]) {
   // Upsert the Project
   const projectDb = new BaseDb<Project>('Project');
-  projectDb.upsert({
+  await projectDb.upsert({
     _id: project.id,
     name: project.name,
     remoteId: project.remoteId,
@@ -46,17 +46,17 @@ async function upsertRequestsRecursive(
 ) {
   for (const request of requests) {
     if (request.type === 'group') {
-      requestGroupDb.upsert(request.group);
-      requestGroupMetaDb.upsert(request.meta);
+      await requestGroupDb.upsert(request.group);
+      await requestGroupMetaDb.upsert(request.meta);
 
       oldIds.removeRequestGroupId(request.id);
 
-      upsertRequestsRecursive(request.children, oldIds, requestDb, requestMetaDb, requestGroupDb, requestGroupMetaDb);
+      await upsertRequestsRecursive(request.children, oldIds, requestDb, requestMetaDb, requestGroupDb, requestGroupMetaDb);
       continue;
     }
 
-    requestDb.upsert(request.request);
-    requestMetaDb.upsert(request.meta);
+    await requestDb.upsert(request.request);
+    await requestMetaDb.upsert(request.meta);
 
     oldIds.removeRequestId(request.id);
   }
@@ -124,7 +124,7 @@ export async function importWorkspaceData(data: GitSavedWorkspace): Promise<void
     sidebarWidth: 19,
     pushSnapshotOnInitialize: false,
   };
-  workspaceMetaDb.upsert(fullMeta);
+  await workspaceMetaDb.upsert(fullMeta);
 
   const requestDb = new BaseDb<BaseRequest>('Request');
   const requestMetaDb = new BaseDb<RequestMeta>('RequestMeta');
@@ -136,14 +136,14 @@ export async function importWorkspaceData(data: GitSavedWorkspace): Promise<void
 
   const environmentDb = new BaseDb<Environment>('Environment');
   for (const environment of data.environments) {
-    environmentDb.upsert(environment);
+    await environmentDb.upsert(environment);
 
     oldIds.removeEnvironmentId(environment._id);
   }
 
   if (data.apiSpec) {
     const apiSpecDb = new BaseDb<ApiSpec>('ApiSpec');
-    apiSpecDb.upsert(data.apiSpec);
+    await apiSpecDb.upsert(data.apiSpec);
   }
 
   const unitTestSuitesDb = new BaseDb<UnittestSuite>('UnitTestSuite');

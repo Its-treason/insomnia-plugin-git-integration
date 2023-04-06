@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-unused-vars: 0 */
 import { Readable } from 'node:stream';
 
 /** context.request: https://docs.insomnia.rest/insomnia/context-object-reference#contextrequest */
@@ -22,10 +23,10 @@ interface RequestContext {
   removeParameter(name: string): void;
   getBody(): RequestBody;
   setBody(body: RequestBody): void;
-  getEnvironmentVariable(name: string): any;
-  getEnvironment(): Object;
+  getEnvironmentVariable(name: string): unknown;
+  getEnvironment(): object;
   setAuthenticationParameter(name: string, value: string): void;
-  getAuthentication(): Object;
+  getAuthentication(): object;
   setCookie(name: string, value: string): void;
   settingSendCookies(enabled: boolean): void;
   settingStoreCookies(enabled: boolean): void;

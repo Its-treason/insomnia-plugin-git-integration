@@ -7,7 +7,6 @@ import { SimpleGit } from 'simple-git';
 import renderModal from '../react/renderModal';
 import alertModal from '../react/alertModal';
 import gitCommitMessage from '../react/gitCommitMessage';
-import { log } from 'node:console';
 
 export default function gitCommitButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitCommitButton = document.createElement('li');
@@ -66,7 +65,7 @@ export default function gitCommitButton(projectDropdown: Element, gitClient: Sim
     }
 
     try {
-       await gitClient.commit(commitMessage);
+      await gitClient.commit(commitMessage);
     } catch (error) {
       await renderModal(alertModal('commit failed', 'An error occurred while fetching', error));
     }

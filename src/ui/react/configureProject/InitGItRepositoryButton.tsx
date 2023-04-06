@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useState } from 'react'
+import React, { CSSProperties, useCallback, useState } from 'react';
 import simpleGit from 'simple-git';
 import ErrorBox from '../ErrorBox';
 
@@ -7,10 +7,15 @@ const buttonStyles: CSSProperties = {
   background: 'var(--color-surprise)',
   color: 'var(--color-font-surprise)',
   borderRadius: 'var(--radius-sm)',
+};
+
+type InitGitRepositoryButtonProps = {
+  updateRepoInfo: () => void,
+  repositoryPath: string,
 }
 
-export default function InitGitRepositoryButton({ updateRepoInfo, repositoryPath }) {
-  const [error, setError] = useState<string | null>(null)
+export default function InitGitRepositoryButton({ updateRepoInfo, repositoryPath }: InitGitRepositoryButtonProps) {
+  const [error, setError] = useState<string | null>(null);
 
   const handleInit = useCallback(async () => {
     const gitClient = simpleGit(repositoryPath);
@@ -22,7 +27,7 @@ export default function InitGitRepositoryButton({ updateRepoInfo, repositoryPath
     }
 
     updateRepoInfo();
-  }, [])
+  }, []);
 
   return (
     <>

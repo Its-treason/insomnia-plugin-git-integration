@@ -33,7 +33,7 @@ module.exports.workspaceActions = [
   {
     label: 'Export workspace to Git',
     icon: 'fa-download',
-    action: async (context, models) => {
+    action: async () => {
       const projectId = getActiveProjectId();
       const workspaceId = getActiveWorkspace();
 
@@ -55,12 +55,12 @@ module.exports.workspaceActions = [
   {
     label: 'Import workspace from Git',
     icon: 'fa-upload',
-    action: async (context, models) => {
+    action: async () => {
       const projectId = getActiveProjectId();
       const workspaceId = getActiveWorkspace();
 
       const config = InternalDb.create();
-      const path = config.getProjectPath(projectId)
+      const path = config.getProjectPath(projectId);
       if (!path || projectId === 'proj_default-project') {
         await renderModal(alertModal(
           'Cannot import workspace',

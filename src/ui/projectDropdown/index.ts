@@ -1,4 +1,4 @@
-import { simpleGit, SimpleGit } from 'simple-git';
+import { simpleGit } from 'simple-git';
 import InternalDb from '../../db/InternalDb';
 import { getActiveProjectId } from '../../db/localStorageUtils';
 import configureGitRepoButton from './configureGitRepoButton';
@@ -17,7 +17,7 @@ export default function projectDropdown() {
   }
 
   // Check if we are already added the new options
-  const exising = document.getElementById('git-integration-project-dropdown')
+  const exising = document.getElementById('git-integration-project-dropdown');
   if (exising) {
     return;
   }
@@ -64,10 +64,13 @@ export default function projectDropdown() {
   // Git buttons. Will only be added when "git status" succeeds
   const gitClient = simpleGit(path);
 
-  gitClient.status().then(statusResult => {
+  gitClient.status().then(() => {
     buttonGroup.appendChild(gitCommitButton(projectDropdown, gitClient));
-    buttonGroup.appendChild(gitPushButton(projectDropdown, gitClient, statusResult));
-    buttonGroup.appendChild(gitFetchButton(projectDropdown, gitClient, statusResult));
-    buttonGroup.appendChild(gitPullButton(projectDropdown, gitClient, statusResult));
-  }).catch((reason) => {}); // Error occurres when git is not inited. No need to handle that
+    buttonGroup.appendChild(gitPushButton(projectDropdown, gitClient));
+    buttonGroup.appendChild(gitFetchButton(projectDropdown, gitClient));
+    buttonGroup.appendChild(gitPullButton(projectDropdown, gitClient));
+  }).catch(() => {
+    // Error occurres when git is not inited. No need to handle that
+    return;
+  });
 }

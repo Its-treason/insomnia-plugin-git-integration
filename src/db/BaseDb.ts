@@ -41,7 +41,7 @@ export default class BaseDb<T extends BaseModel> {
     return new Promise((resolve, reject) => {
       this.neDb.findOne({ _id: id }, (err, doc) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
 
         resolve(doc);
@@ -53,7 +53,7 @@ export default class BaseDb<T extends BaseModel> {
     return new Promise((resolve, reject) => {
       this.neDb.find({ [field]: query }, (err, docs) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
 
         resolve(docs);
@@ -65,7 +65,7 @@ export default class BaseDb<T extends BaseModel> {
     return new Promise((resolve, reject) => {
       this.neDb.find({}, (err, docs) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
 
         resolve(docs);

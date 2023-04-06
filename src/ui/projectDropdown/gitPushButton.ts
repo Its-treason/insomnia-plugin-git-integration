@@ -1,10 +1,10 @@
-import { SimpleGit, StatusResult } from 'simple-git';
+import { SimpleGit } from 'simple-git';
 import alertModal from '../react/alertModal';
 import renderModal from '../react/renderModal';
 import { getActiveProjectId } from '../../db/localStorageUtils';
 import InternalDb from '../../db/InternalDb';
 
-export default function gitPushButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
+export default function gitPushButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitPushButton = document.createElement('li');
   gitPushButton.className = 'sc-crXcEl dTKZde';
   gitPushButton.innerHTML = `
@@ -35,7 +35,7 @@ export default function gitPushButton(projectDropdown: Element, gitClient: Simpl
       }
 
       const projectConfigDb = InternalDb.create();
-      const projectConfig = projectConfigDb.getProject(projectId)
+      const projectConfig = projectConfigDb.getProject(projectId);
 
       const remote = projectConfig.remote ?? remotes[0].name;
 

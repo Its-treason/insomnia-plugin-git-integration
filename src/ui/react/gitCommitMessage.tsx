@@ -1,5 +1,4 @@
-
-import React, { CSSProperties, FC, useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import BaseModal from './BaseModal';
 import UnmountContext from './UnmountContext';
 import useGitRepoInfo from './configureProject/useGitRepoInfo';
@@ -45,10 +44,10 @@ export default function gitCommitMessage(projectPath: string): FC {
         </div>
         <div style={{ margin: '16px 0 8px 0'}}>Staged files that will be commited:</div>
         <pre>
-            {repoInfo.stagedFiles.join('\n')}
+          {repoInfo.stagedFiles.join('\n')}
         </pre>
       </BaseModal>
-    )
+    );
   }
   return GitCommitMessage;
 }

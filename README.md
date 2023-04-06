@@ -63,3 +63,13 @@ This plugins injects new Buttons into the Insomnia ui.
 ## TODO
 
 - UI for Resolving Merge-Conflicts
+
+## Development
+
+Requirements
+- nodejs
+- yarn
+
+Use `yarn start` to auto rebuild the project when changes are made.
+
+Use `npx eslint  src --ext .ts,.tsx --fix` to execute eslint

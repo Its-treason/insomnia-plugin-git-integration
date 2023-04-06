@@ -70,7 +70,7 @@ async function getRequestsForParentId(
       group,
       children: await getRequestsForParentId(group._id, requestDb, requestMetaDb, requestGroupDb, requestGroupMetaDb),
       meta,
-    })
+    });
   }
 
   return gitSavedRequests;
@@ -134,7 +134,7 @@ export async function exportWorkspaceData(workspaceId: string): Promise<GitSaved
     activeActivity: fullMeta.activeActivity,
     activeEnvironmentId: fullMeta.activeEnvironmentId,
     activeRequestId: fullMeta.activeRequestId,
-  }
+  };
 
   const requestDb = new BaseDb<BaseRequest>('Request');
   const requestMetaDb = new BaseDb<RequestMeta>('RequestMeta');

@@ -17,7 +17,10 @@ export default function importNewProjectButton() {
     return;
   }
 
-  const wrapper = createProjectBtn.parentElement!.parentElement!;
+  const wrapper = createProjectBtn.parentElement?.parentElement;
+  if (!wrapper) {
+    return;
+  }
 
   const importProjectBtn = document.createElement('button');
   importProjectBtn.id = 'git-integration-import-project';
@@ -69,7 +72,7 @@ export default function importNewProjectButton() {
     // Force Insomnia to read all data again
     // @ts-ignore
     window.main.restart();
-  })
+  });
 
   wrapper.appendChild(importProjectBtn);
 }

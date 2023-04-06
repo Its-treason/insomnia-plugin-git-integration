@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-explicit-any: 0 */
+
 export interface BaseModel {
   _id: string;
   type: string;

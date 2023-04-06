@@ -30,5 +30,5 @@ export default function useConfigureProject(initalState: ProjectConfig) {
     repoInfo,
     updateRepoInfo,
     visible,
-  }
+  };
 }

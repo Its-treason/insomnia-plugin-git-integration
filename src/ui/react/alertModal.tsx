@@ -9,7 +9,7 @@ const errorBoxStyles: CSSProperties = {
   color: 'var(--color-font)',
   border: '1px solid var(--hl-sm)',
   fontSize: '.9em',
-}
+};
 
 export default function alertModal(title: string, body: string, extBody?: string): FC {
   function AlertModal() {
@@ -27,7 +27,7 @@ export default function alertModal(title: string, body: string, extBody?: string
           ) : null}
         </>
       </BaseModal>
-    )
+    );
   }
   return AlertModal;
 }

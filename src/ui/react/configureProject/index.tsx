@@ -40,7 +40,7 @@ export default function configureProject(projectId: string): FC {
           ) : null}
         </div>
       </BaseModal>
-    )
+    );
   }
   return ConfigureProjectModal;
 }

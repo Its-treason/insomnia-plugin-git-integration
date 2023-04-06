@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from 'react';
 
 export default function ErrorBox({ children }: { children: string | ReactNode }) {
   return (

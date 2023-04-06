@@ -30,7 +30,7 @@ export default function importProjectButton(projectDropdown: Element): HTMLEleme
     }
 
     const config = InternalDb.create();
-    const path = config.getProjectPath(projectId)
+    const path = config.getProjectPath(projectId);
     if (!path || projectId === 'proj_default-project') {
       await renderModal(alertModal(
         'Cannot import Project',

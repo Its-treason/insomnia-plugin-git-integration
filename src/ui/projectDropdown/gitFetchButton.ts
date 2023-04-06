@@ -1,8 +1,8 @@
-import { SimpleGit, StatusResult } from 'simple-git';
+import { SimpleGit } from 'simple-git';
 import alertModal from '../react/alertModal';
 import renderModal from '../react/renderModal';
 
-export default function gitFetchButton(projectDropdown: Element, gitClient: SimpleGit, statusResult: StatusResult): HTMLElement {
+export default function gitFetchButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitFetchButton = document.createElement('li');
   gitFetchButton.className = 'sc-crXcEl dTKZde';
   gitFetchButton.innerHTML = `

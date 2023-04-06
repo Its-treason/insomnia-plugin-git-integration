@@ -17,12 +17,13 @@ export default class InternalDb {
 
   private constructor() {
     // @ts-ignore
-    const filename = fsPath.join(window.app.getPath('userData'), `insomnia.plugin.git-integration.json`);
+    const filename = fsPath.join(window.app.getPath('userData'), 'insomnia.plugin.git-integration.json');
 
     if (!fs.existsSync(filename)) {
       fs.writeFileSync(filename, '');
     }
 
+    // TODO: Validate this with ZOD
     const rawConfig = fs.readFileSync(filename).toString();
     if (!rawConfig || rawConfig.trim().length === 0) {
       this.config = { projects: [] };
@@ -33,7 +34,7 @@ export default class InternalDb {
 
   private save() {
     // @ts-ignore
-    const filename = fsPath.join(window.app.getPath('userData'), `insomnia.plugin.git-integration.json`);
+    const filename = fsPath.join(window.app.getPath('userData'), 'insomnia.plugin.git-integration.json');
 
     fs.writeFileSync(filename, JSON.stringify(this.config, null, 2));
   }
