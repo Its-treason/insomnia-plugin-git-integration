@@ -41,10 +41,12 @@ export default function gitPushButton(projectDropdown: Element, gitClient: Simpl
 
       const pushResult = await gitClient.push(remote, branch.current);
 
-      await renderModal(alertModal(
-        'Pushed commits',
-        `Pushed to ${remotes[0].name}/${branch.current}. Remote is now at "${pushResult.update.hash.to}" (was at "${pushResult.update.hash.from}" before)`,
-      ));
+      let message = `Pushed to ${remote}/${branch.current}.`;
+      if (pushResult.update) {
+        message += ` Remote is now at "${pushResult.update.hash.to}" (was at "${pushResult.update.hash.from}" before)`
+      }
+
+      await renderModal(alertModal('Pushed commits', message));
     } catch (error) {
       await renderModal(alertModal('Push failed', 'An error occurred while pushing commits', error));
     }
