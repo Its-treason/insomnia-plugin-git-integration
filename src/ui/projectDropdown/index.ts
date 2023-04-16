@@ -8,6 +8,7 @@ import gitCommitButton from './gitCommitButton';
 import gitPushButton from './gitPushButton';
 import gitPullButton from './gitPullButton';
 import gitFetchButton from './gitFetchButton';
+import defaultProjectInfo from './defaultProjectInfo';
 
 export default function projectDropdown() {
   // Check if the dropdown is opened
@@ -50,6 +51,7 @@ export default function projectDropdown() {
 
   // proj_default-project is the default 'Insomnia' project. We cant import / export that
   if (projectId === 'proj_default-project') {
+    buttonGroup.appendChild(defaultProjectInfo());
     return;
   }
   buttonGroup.appendChild(configureGitRepoButton(projectDropdown));

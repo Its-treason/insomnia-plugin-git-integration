@@ -24,6 +24,7 @@ I need your feedback to further improve the Plugins features and usability. If y
 
 ### Setup with existing project
 
+- This plugin does not work with the default `Insomnia` project, you must create a other project.
 - Open the collection overview of the existing project.
 - Click on `Create` and in the dropdown choose `Configure project`
 
