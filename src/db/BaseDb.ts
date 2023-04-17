@@ -15,6 +15,7 @@ export default class BaseDb<T extends BaseModel> {
       autoload: true,
       filename,
       corruptAlertThreshold: 0.9,
+      inMemoryOnly: false,
     });
   }
 
