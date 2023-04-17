@@ -1,6 +1,28 @@
 import BaseDb from './db/BaseDb';
 import { BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Workspace, WorkspaceMeta, Environment, Project, ApiSpec, UnittestSuite, UnitTest } from './insomniaDbTypes';
 import { GitSavedProject, GitSavedRequest, GitSavedUnitTestSuite, GitSavedWorkspace, GitSavedWorkspaceMeta } from './types';
+import { randomBytes } from 'crypto'
+
+function createDefaultRequestMeta(parentId: string): RequestMeta {
+  return {
+    parentId,
+    previewMode: "friendly", // PREVIEW_MODE_FRIENDLY
+    responseFilter: '',
+    responseFilterHistory: [],
+    activeResponseId: null,
+    savedRequestBody: {},
+    pinned: false,
+    lastActive: 0,
+    downloadPath: null,
+    expandedAccordionKeys: {},
+    created: Date.now(),
+    isPrivate: false,
+    modified: Date.now(),
+    type: 'RequestMeta',
+    _id: 'reqm_' + randomBytes(16).toString('hex'),
+    name: '', // This is not used by insomnia.
+  }
+}
 
 export async function exportProject(projectId: string): Promise<[GitSavedProject, GitSavedWorkspace[]]> {
   // Load the Project
@@ -43,10 +65,10 @@ async function getRequestsForParentId(
   const requests = await requestDb.findBy('parentId', parentId);
   for (const request of requests) {
     const metas = await requestMetaDb.findBy('parentId', request._id);
-    if (metas.length === 0) {
-      throw new Error('No RequestMeta found for parentId: ' + request._id);
-    }
-    const meta = metas[0];
+    // When duplicating a Workspace the Request meta is not automaticly created
+    // As a workaround we use the default object.
+    // See: https://github.com/Kong/insomnia/blob/develop/packages/insomnia/src/models/request-meta.ts#L32
+    const meta = metas[0] || createDefaultRequestMeta(request._id);
 
     gitSavedRequests.push({
       type: 'request',
@@ -117,9 +139,6 @@ export async function exportWorkspaceData(workspaceId: string): Promise<GitSaved
   const workspaceMetaDb = new BaseDb<WorkspaceMeta>('WorkspaceMeta');
 
   const fullMetas = await workspaceMetaDb.findBy('parentId', workspaceId);
-  if (fullMetas.length === 0) {
-    throw new Error('No WorkspaceMeta found for parentId: ' + workspaceId);
-  }
   const fullMeta = fullMetas[0];
 
   const meta: GitSavedWorkspaceMeta = {
