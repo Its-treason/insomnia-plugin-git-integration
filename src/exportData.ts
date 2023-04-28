@@ -1,7 +1,20 @@
 import BaseDb from './db/BaseDb';
 import { BaseRequest, RequestMeta, RequestGroup, RequestGroupMeta, Workspace, WorkspaceMeta, Environment, Project, ApiSpec, UnittestSuite, UnitTest } from './insomniaDbTypes';
 import { GitSavedProject, GitSavedRequest, GitSavedUnitTestSuite, GitSavedWorkspace, GitSavedWorkspaceMeta } from './types';
-import { randomBytes } from 'crypto'
+import { randomBytes } from 'crypto';
+
+function createDefaultFolderMeta(parentId: string): RequestGroupMeta {
+  return {
+    collapsed: true,
+    parentId,
+    created: Date.now(),
+    isPrivate: false,
+    modified: Date.now(),
+    type: 'RequestGroupMeta',
+    _id: 'fldm_' + randomBytes(16).toString('hex'),
+    name: '', // This is not used by insomnia.
+  };
+}
 
 function createDefaultRequestMeta(parentId: string): RequestMeta {
   return {
@@ -81,10 +94,8 @@ async function getRequestsForParentId(
   const groups = await requestGroupDb.findBy('parentId', parentId);
   for (const group of groups) {
     const metas = await requestGroupMetaDb.findBy('parentId', group._id);
-    if (metas.length === 0) {
-      throw new Error('No RequestMeta found for parentId: ' + group._id);
-    }
-    const meta = metas[0];
+    // Create default GroupMetadata when nothing was found. Not sure when this happens but should fix #3
+    const meta = metas[0] || createDefaultFolderMeta(group._id);
 
     gitSavedRequests.push({
       type: 'group',
