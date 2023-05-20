@@ -23,8 +23,8 @@ export default function gitPullButton(projectDropdown: Element, gitClient: Simpl
     try {
       const branch = await gitClient.branchLocal();
       const remotes = await gitClient.getRemotes();
-      if (!remotes) {
-        await renderModal(alertModal('Unable to push', 'No remotes defined for git repository'));
+      if (!remotes[0]) {
+        await renderModal(alertModal('Unable to pull', 'No remotes defined for git repository'));
         return;
       }
 
