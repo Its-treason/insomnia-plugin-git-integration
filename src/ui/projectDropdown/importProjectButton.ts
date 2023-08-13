@@ -9,11 +9,11 @@ import renderModal from '../react/renderModal';
 
 export default function importProjectButton(projectDropdown: Element): HTMLElement {
   const importProjectButton = document.createElement('li');
-  importProjectButton.className = 'sc-crXcEl dTKZde';
+  importProjectButton.className = 'ipgi-dropdown-btn-wrapper';
   importProjectButton.innerHTML = `
-    <div role="button" class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
-        <i class="sc-dIouRR GdBqH fa fa-download">
+    <div role="button" class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
+        <i class="ipgi-dropdown-btn-icon fa fa-download">
         </i>
         Import Project
       </div>

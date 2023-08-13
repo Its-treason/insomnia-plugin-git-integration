@@ -8,6 +8,7 @@ import importNewProjectButton from './ui/importNewProjectButton';
 import projectDropdown from './ui/projectDropdown';
 import alertModal from './ui/react/alertModal';
 import renderModal from './ui/react/renderModal';
+import injectStyles from './ui/injectStyles';
 
 // Inject UI elements.
 // @ts-ignore
@@ -22,6 +23,7 @@ function doInject() {
     return;
   }
 
+  injectStyles();
   projectDropdown();
   importNewProjectButton();
 

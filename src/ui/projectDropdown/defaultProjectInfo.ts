@@ -1,11 +1,11 @@
 export default function defaultProjectInfo(): HTMLElement {
   const defaultProjectInfo = document.createElement('li');
-  defaultProjectInfo.className = 'sc-crXcEl dTKZde';
+  defaultProjectInfo.className = 'ipgi-dropdown-btn-wrapper';
   // Remove the Curser Pointer
   defaultProjectInfo.style.cursor = 'unset';
   defaultProjectInfo.innerHTML = `
-    <div class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
+    <div class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
         Git integration does not work<br /> with the default project
       </div>
     </div>

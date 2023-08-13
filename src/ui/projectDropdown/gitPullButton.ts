@@ -6,11 +6,11 @@ import { getActiveProjectId } from '../../db/localStorageUtils';
 
 export default function gitPullButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitPullButton = document.createElement('li');
-  gitPullButton.className = 'sc-crXcEl dTKZde';
+  gitPullButton.className = 'ipgi-dropdown-btn-wrapper';
   gitPullButton.innerHTML = `
-    <div role="button" class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
-        <i class="sc-dIouRR GdBqH fa fa-code-merge">
+    <div role="button" class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
+        <i class="ipgi-dropdown-btn-icon fa fa-code-merge">
         </i>
         Pull
       </div>

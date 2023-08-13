@@ -32,17 +32,17 @@ export default function projectDropdown() {
   // Create a seperator for the buttoons
   const seperatetor = document.createElement('div');
   seperatetor.innerHTML = `
-    <span id="react-aria6002839293-469" aria-hidden="true" class="sc-breuTD cBnDcU">Git integration</span>
-    <hr role="separator" class="sc-ksZaOG kutQZa">
+    <span id="react-aria6002839293-469" aria-hidden="true" class="ipgi-dropdown-heading-text">Git integration</span>
+    <hr role="separator" class="ipgi-dropdown-heading-divider">
   `;
-  seperatetor.className = 'sc-evZas cJMyyw';
+  seperatetor.className = 'ipgi-dropdown-heading';
   li.appendChild(seperatetor);
 
   // Create a Button group
   const buttonGroup = document.createElement('ul');
   buttonGroup.role = 'group';
   buttonGroup.ariaLabel = 'Git integration import';
-  buttonGroup.className = 'sc-hAZoDl gNdbbO';
+  buttonGroup.className = 'ipgi-dropdown-btn-group';
   li.appendChild(buttonGroup);
 
   const projectId = getActiveProjectId();

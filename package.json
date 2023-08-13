@@ -16,6 +16,7 @@
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc",
+    "postbuild": "copyfiles -u 1 src/ui/style.css dist/",
     "lint": "eslint  src --ext .ts,.tsx --fix"
   },
   "main": "dist/index.js",
@@ -46,6 +47,7 @@
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.47.0",
     "eslint-plugin-react": "^7.33.1",
     "typescript": "^5.1.6"

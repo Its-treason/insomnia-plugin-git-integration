@@ -8,11 +8,11 @@ import alertModal from '../react/alertModal';
 
 export default function exportProjectButton(projectDropdown: Element): HTMLElement {
   const exportProjectButton = document.createElement('li');
-  exportProjectButton.className = 'sc-crXcEl dTKZde';
+  exportProjectButton.className = 'ipgi-dropdown-btn-wrapper';
   exportProjectButton.innerHTML = `
-    <div role="button" class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
-        <i class="sc-dIouRR GdBqH fa fa-upload">
+    <div role="button" class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
+        <i class="ipgi-dropdown-btn-icon fa fa-upload">
         </i>
         Export Project
       </div>

@@ -5,12 +5,11 @@ import configureProject from '../react/configureProject';
 
 export default function configureGitRepoButton(projectDropdown: Element): HTMLElement {
   const configureProjectButton = document.createElement('li');
-  configureProjectButton.className = 'sc-crXcEl dTKZde';
+  configureProjectButton.className = 'ipgi-dropdown-btn-wrapper';
   configureProjectButton.innerHTML = `
-    <div role="button" class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
-        <i class="sc-dIouRR GdBqH fa fa-cog">
-        </i>
+    <div role="button" class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
+        <i class="ipgi-dropdown-btn-icon fa fa-cog"></i>
         Configure project
       </div>
     </div>

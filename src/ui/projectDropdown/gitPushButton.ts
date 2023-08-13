@@ -6,11 +6,11 @@ import InternalDb from '../../db/InternalDb';
 
 export default function gitPushButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitPushButton = document.createElement('li');
-  gitPushButton.className = 'sc-crXcEl dTKZde';
+  gitPushButton.className = 'ipgi-dropdown-btn-wrapper';
   gitPushButton.innerHTML = `
-    <div role="button" class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
-        <i class="sc-dIouRR GdBqH fa fa-code-pull-request">
+    <div role="button" class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
+        <i class="ipgi-dropdown-btn-icon fa fa-code-pull-request">
         </i>
         Push
       </div>

@@ -10,11 +10,11 @@ import gitCommitMessage from '../react/gitCommitMessage';
 
 export default function gitCommitButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitCommitButton = document.createElement('li');
-  gitCommitButton.className = 'sc-crXcEl dTKZde';
+  gitCommitButton.className = 'ipgi-dropdown-btn-wrapper';
   gitCommitButton.innerHTML = `
-    <div role="button" class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
-        <i class="sc-dIouRR GdBqH fa fa-check">
+    <div role="button" class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
+        <i class="ipgi-dropdown-btn-icon fa fa-check">
         </i>
         Commit changes
       </div>

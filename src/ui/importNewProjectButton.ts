@@ -25,12 +25,8 @@ export default function importNewProjectButton() {
   const importProjectBtn = document.createElement('button');
   importProjectBtn.id = 'git-integration-import-project';
   importProjectBtn.role = 'button';
-  importProjectBtn.className = 'sc-kDDrLX kfNync';
+  importProjectBtn.className = 'ipgi-import-btn';
   importProjectBtn.innerHTML = '<i class="fa fa-git"></i>';
-  importProjectBtn.style.padding = 'var(--padding-sm)';
-  importProjectBtn.style.minWidth = 'auto';
-  importProjectBtn.style.width = 'unset';
-  importProjectBtn.style.flex = '0 1 0%';
 
   importProjectBtn.addEventListener('click', async () => {
     // @ts-ignore

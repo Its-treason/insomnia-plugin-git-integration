@@ -4,11 +4,11 @@ import renderModal from '../react/renderModal';
 
 export default function gitFetchButton(projectDropdown: Element, gitClient: SimpleGit): HTMLElement {
   const gitFetchButton = document.createElement('li');
-  gitFetchButton.className = 'sc-crXcEl dTKZde';
+  gitFetchButton.className = 'ipgi-dropdown-btn-wrapper';
   gitFetchButton.innerHTML = `
-    <div role="button" class="sc-hHLeRK fIvtTx">
-      <div class="sc-kgflAQ ldFYrA">
-        <i class="sc-dIouRR GdBqH fa fa-cloud-arrow-down">
+    <div role="button" class="ipgi-dropdown-btn">
+      <div class="ipgi-dropdown-btn-text">
+        <i class="ipgi-dropdown-btn-icon fa fa-cloud-arrow-down">
         </i>
         Fetch
       </div>
