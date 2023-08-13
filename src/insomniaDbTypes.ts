@@ -1,5 +1,10 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
+// These are all types from the Insomnia source code
+// All type declarations are located in "packages/insomnia/src/models/*"
+// Most types are declared in files inside this folder with the same name
+
+// index.ts
 export interface BaseModel {
   _id: string;
   type: string;
@@ -27,11 +32,14 @@ export type Environment = {
 // Project
 export type Project = {
   name: string,
-  remoteId?: string,
+  remoteId?: string, // Only remote projects have a remote id
 } & BaseModel;
 
 // Workspace
 export type Workspace = {
+  name: string;
+  description: string;
+  certificates?: any; // deprecate
   scope: 'design' | 'collection',
 } & BaseModel;
 
@@ -57,14 +65,14 @@ export type WorkspaceMeta = {
 
 // Request
 export type BaseRequest = {
-  url: string;
+    url: string;
   name: string;
   description: string;
   method: string;
   body: RequestBody;
   parameters: RequestParameter[];
   headers: RequestHeader[];
-  authentication: Record<string, any>;
+  authentication: Record<string, string>; // This should be RequestAuthentication but is not used in the project
   metaSortKey: number;
   isPrivate: boolean;
   // Settings
@@ -109,7 +117,7 @@ export interface RequestBody {
 // RequestMeta
 export type RequestMeta = {
   parentId: string;
-  previewMode: 'friendly' | 'source' | 'raw'; // This is PreviewMode from /common/constants
+  previewMode: 'friendly' | 'source' | 'raw'; // This is PreviewMode from ../common/constants
   responseFilter: string;
   responseFilterHistory: string[];
   activeResponseId: string | null;

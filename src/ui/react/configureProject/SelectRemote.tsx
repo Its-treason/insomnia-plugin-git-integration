@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import React, { useCallback } from 'react';
 import { ProjectConfig } from '../../../db/InternalDb';
 import ErrorBox from '../ErrorBox';

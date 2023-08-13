@@ -4,10 +4,11 @@
         "target": "ES5",
         "outDir": "dist",
         "rootDir": "src",
+        "skipLibCheck": true,
         "esModuleInterop": true,
         "declaration": true,
         "inlineSourceMap": true,
         "jsx": "react"
     },
-    "include": ["src/*", "src/db/BaseDb.ts"]
+    "include": ["src/*"]
 }

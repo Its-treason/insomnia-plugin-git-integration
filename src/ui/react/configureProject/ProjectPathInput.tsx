@@ -2,7 +2,7 @@ import React, { CSSProperties, useCallback, useMemo, useState } from 'react';
 import { ProjectConfig } from '../../../db/InternalDb';
 import fs from 'node:fs';
 import ErrorBox from '../ErrorBox';
-import produce from 'immer';
+import { produce } from 'immer';
 
 const buttonStyles: CSSProperties = {
   marginTop: '2rem',

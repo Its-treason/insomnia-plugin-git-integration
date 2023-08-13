@@ -14,7 +14,7 @@
     "git"
   ],
   "scripts": {
-    "start": "tsc -w",
+    "watch": "tsc -w",
     "build": "tsc",
     "lint": "eslint  src --ext .ts,.tsx --fix"
   },
@@ -32,22 +32,22 @@
     }
   },
   "dependencies": {
-    "immer": "^9.0.21",
+    "immer": "^10.0.2",
     "nedb": "^1.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "simple-git": "^3.17.0"
+    "simple-git": "^3.19.1"
   },
   "homepage": "https://github.com/Its-treason/insomnia-plugin-git-integration#readme",
   "devDependencies": {
     "@types/nedb": "^1.8.13",
-    "@types/node": "^18.15.9",
-    "@types/react": "^18.0.31",
-    "@types/react-dom": "^18.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
-    "eslint": "^8.37.0",
-    "eslint-plugin-react": "^7.32.2",
-    "typescript": "^5.0.2"
+    "@types/node": "^20.4.10",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "eslint": "^8.47.0",
+    "eslint-plugin-react": "^7.33.1",
+    "typescript": "^5.1.6"
   }
 }
