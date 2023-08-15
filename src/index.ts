@@ -1,4 +1,4 @@
-import { exportWorkspaceData } from './exportData';
+import { exportProject, exportWorkspaceData } from './exportData';
 import fs from 'node:fs';
 import { importWorkspaceData } from './importData';
 import InternalDb from './db/InternalDb';
@@ -31,10 +31,34 @@ function doInject() {
 }
 window.requestAnimationFrame(doInject);
 
+async function autoExport() {
+  const projectId = getActiveProjectId();
+  if (!projectId) {
+    return;
+  }
+
+  const config = InternalDb.create();
+  const { repositoryPath: path, autoExport } = config.getProject(projectId);
+  if (!path || !autoExport || projectId === 'proj_default-project') {
+    return;
+  }
+
+  const [projectData, workspaces] = await exportProject(projectId);
+
+  const targetFile = join(path, 'project.json');
+  fs.writeFileSync(targetFile, JSON.stringify(projectData, null, 2));
+
+  for (const workspace of workspaces) {
+    const targetFile = join(path, workspace.id + '.json');
+    fs.writeFileSync(targetFile, JSON.stringify(workspace, null, 2));
+  }
+}
+setInterval(autoExport, 5000);
+
 module.exports.workspaceActions = [
   {
     label: 'Export workspace to Git',
-    icon: 'fa-download',
+    icon: 'download',
     action: async () => {
       const projectId = getActiveProjectId();
       const workspaceId = getActiveWorkspace();
@@ -56,7 +80,7 @@ module.exports.workspaceActions = [
   },
   {
     label: 'Import workspace from Git',
-    icon: 'fa-upload',
+    icon: 'upload',
     action: async () => {
       const projectId = getActiveProjectId();
       const workspaceId = getActiveWorkspace();

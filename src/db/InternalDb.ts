@@ -5,6 +5,7 @@ export type ProjectConfig = {
   id: string,
   repositoryPath: string | null,
   remote: string | null,
+  autoExport?: boolean
   // TODO: For later, enable Sync using GitHub / GitLab OAuth-Apis (#1)
 }
 
@@ -65,6 +66,7 @@ export default class InternalDb {
         id: projectId,
         remote: null,
         repositoryPath: null,
+        autoExport: false,
       };
     }
 
@@ -75,6 +77,7 @@ export default class InternalDb {
     const existingIndex = this.config.projects.findIndex((p) => p.id === project.id);
     if (existingIndex !== -1) {
       this.config.projects[existingIndex] = project;
+      this.save();
       return;
     }
 

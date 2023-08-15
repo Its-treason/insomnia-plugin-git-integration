@@ -6,6 +6,7 @@ import ProjectPathInput from './ProjectPathInput';
 import InitGitRepositoryButton from './InitGItRepositoryButton';
 import SelectRemote from './SelectRemote';
 import UnmountContext from '../UnmountContext';
+import AutoExport from './AutoExport';
 
 export default function configureProject(projectId: string): FC {
   const internalDb = InternalDb.create();
@@ -16,7 +17,6 @@ export default function configureProject(projectId: string): FC {
 
     const handleSave = useCallback(() => {
       internalDb.upsertProject(project);
-
       unmount();
     }, [project]);
 
@@ -32,6 +32,7 @@ export default function configureProject(projectId: string): FC {
       >
         <div className={'form-group'}>
           <ProjectPathInput setProject={setProject} current={project.repositoryPath} />
+          <AutoExport project={project} setProject={setProject} />
           {visible.init ? (
             <InitGitRepositoryButton repositoryPath={project.repositoryPath} updateRepoInfo={updateRepoInfo} />
           ) : null}
