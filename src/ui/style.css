@@ -48,7 +48,6 @@
   padding: 0px;
   list-style: none;
 }
-/* For some reason Insomnia will replace the class name of the li on hover */
 .ipgi-dropdown-btn-group > li {
   display: flex;
   -webkit-box-align: center;

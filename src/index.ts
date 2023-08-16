@@ -9,6 +9,7 @@ import projectDropdown from './ui/projectDropdown';
 import alertModal from './ui/react/alertModal';
 import renderModal from './ui/react/renderModal';
 import injectStyles from './ui/injectStyles';
+import autoExport from './autoExport';
 
 // Inject UI elements.
 // @ts-ignore
@@ -31,28 +32,6 @@ function doInject() {
 }
 window.requestAnimationFrame(doInject);
 
-async function autoExport() {
-  const projectId = getActiveProjectId();
-  if (!projectId) {
-    return;
-  }
-
-  const config = InternalDb.create();
-  const { repositoryPath: path, autoExport } = config.getProject(projectId);
-  if (!path || !autoExport || projectId === 'proj_default-project') {
-    return;
-  }
-
-  const [projectData, workspaces] = await exportProject(projectId);
-
-  const targetFile = join(path, 'project.json');
-  fs.writeFileSync(targetFile, JSON.stringify(projectData, null, 2));
-
-  for (const workspace of workspaces) {
-    const targetFile = join(path, workspace.id + '.json');
-    fs.writeFileSync(targetFile, JSON.stringify(workspace, null, 2));
-  }
-}
 setInterval(autoExport, 5000);
 
 module.exports.workspaceActions = [

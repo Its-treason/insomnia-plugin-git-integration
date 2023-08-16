@@ -1,9 +1,6 @@
 import { getActiveProjectId } from '../../db/localStorageUtils';
 import InternalDb from '../../db/InternalDb';
-import fs from 'node:fs';
-import { join } from 'node:path';
-import { GitSavedProject, GitSavedWorkspace } from '../../types';
-import { importProject } from '../../importData';
+import { importProject, readProjectData } from '../../importData';
 import alertModal from '../react/alertModal';
 import renderModal from '../react/renderModal';
 
@@ -39,34 +36,13 @@ export default function importProjectButton(projectDropdown: Element): HTMLEleme
       return;
     }
 
-    // Read the Project file
-    const projectFile = join(path, 'project.json');
-    // TODO: Validate this using Zod
-    const project: GitSavedProject = JSON.parse(fs.readFileSync(projectFile).toString());
-
-    // Read all the workspace data
-    const workspaceData: GitSavedWorkspace[] = [];
-    for (const workspaceId of project.workspaceIds) {
-      const workspaceFile = join(path, workspaceId + '.json');
-      // TODO: Validate this using Zod
-      const workspace: GitSavedWorkspace = JSON.parse(fs.readFileSync(workspaceFile).toString());
-      workspaceData.push(workspace);
-    }
-
+    const [project, workspaceData] = readProjectData(path);
     await importProject(project, workspaceData);
 
     // Force Insomnia to read all data again.
     // Wrapped with requestIdleCallback to make sure NeDB had enough time to save everything
     // @ts-ignore
     window.requestIdleCallback(window.main.restart);
-  });
-
-  // Hover effect
-  importProjectButton.addEventListener('mouseover', () => {
-    importProjectButton.className = 'sc-crXcEl UvQbr';
-  });
-  importProjectButton.addEventListener('mouseout', () => {
-    importProjectButton.className = 'sc-crXcEl dTKZde';
   });
 
   return importProjectButton;
