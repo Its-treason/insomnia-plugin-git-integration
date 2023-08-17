@@ -36,6 +36,9 @@ export default async function autoExport() {
   }
 
   prevExport[projectId] = newExportJson;
+  // Reset the Import data to make sure no import starts because of this export
+  prevImport[projectId] = undefined;
+
   const targetFile = join(path, 'project.json');
   fs.writeFileSync(targetFile, JSON.stringify(projectData, null, 2));
 
