@@ -6,8 +6,9 @@ import { exportProject } from './exportData';
 import { importProject, readProjectData } from './importData';
 import renderModal from './ui/react/renderModal';
 import confirmModal from './ui/react/confirmModal';
+import { GitSavedProject, GitSavedWorkspace } from './types';
 
-let prevExport = '';
+let prevExport: Record<string, string> = {};
 export default async function autoExport() {
   const projectId = getActiveProjectId();
   if (!projectId) {
@@ -22,13 +23,19 @@ export default async function autoExport() {
 
   const [projectData, workspaces] = await exportProject(projectId);
   const newExportJson = JSON.stringify([projectData, workspaces]);
-  if (newExportJson === prevExport) {
+  // First import, set the inital data
+  if (prevExport[projectId] === undefined) {
+    prevExport[projectId] = newExportJson;
+    return;
+  }
+
+  if (prevExport[projectId] === newExportJson) {
     // Nothing to export, so lets try to Import
     await autoImportProject(path);
     return;
   }
 
-  prevExport = newExportJson;
+  prevExport[projectId] = newExportJson;
   const targetFile = join(path, 'project.json');
   fs.writeFileSync(targetFile, JSON.stringify(projectData, null, 2));
 
@@ -38,9 +45,10 @@ export default async function autoExport() {
   }
 }
 
-let prevImport = '';
+let importModalOpen = false;
+let prevImport: Record<string, string> = {};
 async function autoImportProject(path: string) {
-  let project, workspaceData;
+  let project: GitSavedProject, workspaceData: GitSavedWorkspace[];
   try {
     [project, workspaceData] = readProjectData(path);
   } catch (e) {
@@ -50,26 +58,34 @@ async function autoImportProject(path: string) {
   const newImportJson = JSON.stringify([project, workspaceData]);
 
   // Do not import the first time
-  if (prevImport === '') {
-    prevImport = newImportJson;
+  if (prevImport[project.id] === undefined) {
+    prevImport[project.id] = newImportJson;
     return;
   }
 
-  if (prevImport === newImportJson) {
+  if (prevImport[project.id] === newImportJson || importModalOpen) {
     // Nothing to import
     return;
   }
 
+  importModalOpen = true;
   const doImport = await renderModal<boolean>(confirmModal(
     'Import project',
-    'Import chhanged project data? Insomnia will restart.',
+    'Import changed project data? Insomnia will restart.',
   ));
+  importModalOpen = false;
+  // Doesn't matter if we want to import or not, ensure we don't aks again for the same thing
+  prevImport[project.id] = newImportJson;
   if (!doImport) {
     return;
   }
 
-  await importProject(project, workspaceData);
-  // Force Insomnia to read all data
-  // @ts-ignore
-  window.main.restart();
+  try {
+    await importProject(project, workspaceData);
+    // Force Insomnia to read all data
+    // @ts-ignore
+    window.main.restart();
+  } catch (e) {
+    console.error('[IPGI] Failed to export data', e);
+  }
 }
