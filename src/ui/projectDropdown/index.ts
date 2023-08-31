@@ -12,7 +12,7 @@ import defaultProjectInfo from './defaultProjectInfo';
 
 export default function projectDropdown() {
   // Check if the dropdown is opened
-  const projectDropdown = document.querySelector('ul[aria-label="Create New Dropdown"]');
+  const projectDropdown = document.querySelector('div[role="menu"][aria-label="Create in project actions"]');
   if (projectDropdown === null) {
     return;
   }
@@ -24,26 +24,26 @@ export default function projectDropdown() {
   }
 
   // Create a wrapper element
-  const li = document.createElement('li');
-  li.id = 'git-integration-project-dropdown';
-  li.role = 'presentation';
-  projectDropdown.appendChild(li);
+  const wrapper = document.createElement('div');
+  wrapper.id = 'git-integration-project-dropdown';
+  wrapper.role = 'presentation';
+  projectDropdown.appendChild(wrapper);
 
   // Create a seperator for the buttoons
-  const seperatetor = document.createElement('div');
-  seperatetor.innerHTML = `
+  const separator = document.createElement('div');
+  separator.innerHTML = `
     <span id="react-aria6002839293-469" aria-hidden="true" class="ipgi-dropdown-heading-text">Git integration</span>
     <hr role="separator" class="ipgi-dropdown-heading-divider">
   `;
-  seperatetor.className = 'ipgi-dropdown-heading';
-  li.appendChild(seperatetor);
+  separator.className = 'ipgi-dropdown-heading';
+  wrapper.appendChild(separator);
 
   // Create a Button group
   const buttonGroup = document.createElement('ul');
   buttonGroup.role = 'group';
   buttonGroup.ariaLabel = 'Git integration import';
   buttonGroup.className = 'ipgi-dropdown-btn-group';
-  li.appendChild(buttonGroup);
+  wrapper.appendChild(buttonGroup);
 
   const projectId = getActiveProjectId();
   const config = InternalDb.create();
