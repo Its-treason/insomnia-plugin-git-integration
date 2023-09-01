@@ -7,7 +7,7 @@ import alertModal from './react/alertModal';
 import renderModal from './react/renderModal';
 
 export default function importNewProjectButton() {
-  const createProjectBtn = document.querySelector('i[data-testid="CreateProjectButton"]');
+  const createProjectBtn = document.querySelector('button[aria-label="Create new Project"]');
   if (!createProjectBtn) {
     return;
   }
@@ -17,7 +17,7 @@ export default function importNewProjectButton() {
     return;
   }
 
-  const wrapper = createProjectBtn.parentElement?.parentElement;
+  const wrapper = createProjectBtn.parentElement;
   if (!wrapper) {
     return;
   }

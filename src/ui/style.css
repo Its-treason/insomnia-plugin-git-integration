@@ -9,7 +9,6 @@
   border: 1px solid transparent;
   border-radius: 3px;
   padding: var(--padding-sm);
-  height: calc(var(--line-height-xs) * 0.8);
   font-size: var(--font-size-sm);
   background-color: transparent;
   display: inline-flex !important;
