@@ -8,7 +8,7 @@ import renderModal from './ui/react/renderModal';
 import confirmModal from './ui/react/confirmModal';
 import { GitSavedProject, GitSavedWorkspace } from './types';
 
-let prevExport: Record<string, string> = {};
+const prevExport: Record<string, string> = {};
 export default async function autoExport() {
   const projectId = getActiveProjectId();
   if (!projectId) {
@@ -49,7 +49,7 @@ export default async function autoExport() {
 }
 
 let importModalOpen = false;
-let prevImport: Record<string, string> = {};
+const prevImport: Record<string, string> = {};
 async function autoImportProject(path: string) {
   let project: GitSavedProject, workspaceData: GitSavedWorkspace[];
   try {

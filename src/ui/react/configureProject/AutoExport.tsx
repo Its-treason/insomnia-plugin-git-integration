@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from 'react';
 import { ProjectConfig } from '../../../db/InternalDb';
 import { produce } from 'immer';
 

@@ -19,7 +19,7 @@ function createDefaultFolderMeta(parentId: string): RequestGroupMeta {
 function createDefaultRequestMeta(parentId: string): RequestMeta {
   return {
     parentId,
-    previewMode: "friendly", // PREVIEW_MODE_FRIENDLY
+    previewMode: 'friendly', // PREVIEW_MODE_FRIENDLY
     responseFilter: '',
     responseFilterHistory: [],
     activeResponseId: null,
@@ -34,7 +34,7 @@ function createDefaultRequestMeta(parentId: string): RequestMeta {
     type: 'RequestMeta',
     _id: 'reqm_' + randomBytes(16).toString('hex'),
     name: '', // This is not used by insomnia.
-  }
+  };
 }
 
 export async function exportProject(projectId: string): Promise<[GitSavedProject, GitSavedWorkspace[]]> {

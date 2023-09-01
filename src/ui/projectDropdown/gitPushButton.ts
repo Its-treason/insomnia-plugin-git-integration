@@ -43,7 +43,7 @@ export default function gitPushButton(projectDropdown: Element, gitClient: Simpl
 
       let message = `Pushed to ${remote}/${branch.current}.`;
       if (pushResult.update) {
-        message += ` Remote is now at "${pushResult.update.hash.to}" (was at "${pushResult.update.hash.from}" before)`
+        message += ` Remote is now at "${pushResult.update.hash.to}" (was at "${pushResult.update.hash.from}" before)`;
       }
 
       await renderModal(alertModal('Pushed commits', message));
