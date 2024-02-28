@@ -2,10 +2,12 @@
 
 # ⚠️ THIS PLUGIN DOES NOT WORK WITH INSOMNIA VERSION 8 OR HIGHER
 
-Since Insomnia update 8 all data is saved in the cloud and cannot be accessed by
-this plugin. Use version 2023.5.8 of Insomnia, if you still want to use this
-Plugin. I would highly recommend switching to another API-Client like
-[bruno](https://github.com/usebruno/bruno).
+Since Insomnia version 8 all data is saved in the cloud and cannot be accessed by
+this plugin. Use version 2023.5.8 of Insomnia or (Insomnium)[https://github.com/ArchGPT/insomnium/], if you still
+want to use this Plugin.
+
+I would recommend switching to another API-Client like [Bruno](https://github.com/usebruno/bruno).
+
 ---
 
 Insomnia plugin for exporting and importing insomnia Projects into Git
@@ -84,3 +86,4 @@ Clone the repostitory and add the path to the additional plugin path (Settings >
 Use `yarn run watch` to auto rebuild the project when changes are made.
 
 Use `npx eslint src --ext .ts,.tsx --fix` to execute eslint
+
