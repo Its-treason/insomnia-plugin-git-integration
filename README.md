@@ -3,7 +3,7 @@
 # ⚠️ THIS PLUGIN DOES NOT WORK WITH INSOMNIA VERSION 8 OR HIGHER
 
 Since Insomnia version 8 all data is saved in the cloud and cannot be accessed by
-this plugin. Use version 2023.5.8 of Insomnia or (Insomnium)[https://github.com/ArchGPT/insomnium/], if you still
+this plugin. Use version 2023.5.8 of Insomnia or [Insomnium](https://github.com/ArchGPT/insomnium/), if you still
 want to use this Plugin.
 
 I would recommend switching to another API-Client like [Bruno](https://github.com/usebruno/bruno).
